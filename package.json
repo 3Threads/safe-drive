@@ -7,8 +7,10 @@
     "build": "cd safe-drive-back && yarn build && cd ../safe-drive-front && yarn build",
     "build-back": "cd safe-drive-back && yarn build",
     "build-front": "cd safe-drive-front && yarn build",
-    "start-back": "cd safe-drive-back && yarn start",
-    "start-front": "cd safe-drive-front && yarn start"
+    "start-back": "cd safe-drive-back && yarn build && yarn start",
+    "start-back-no-build": "cd safe-drive-back && yarn start",
+    "start-front": "cd safe-drive-front && yarn build && yarn start",
+    "start-front-no-build": "cd safe-drive-front && yarn start"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
