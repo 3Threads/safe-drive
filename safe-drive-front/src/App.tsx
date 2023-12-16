@@ -1,13 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import TextField from "./Components/InputField";
 
 function App() {
+    const [textFields, setTextFields] = useState([
+        <TextField placeholder={"Destination"} name={"destination"}/>
+    ]);
+    const addNewTextField = ()=>{
+        setTextFields(([...textFields, <TextField placeholder={"Destination"} name={"destination"}/>]))
+    }
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-            </header>
+
+        <div>
+            <form method={"get"} action={"/"} >
+                <TextField placeholder={"Source"} name={"source"}/>
+                {textFields}
+                <input type={"button"} onClick={addNewTextField}></input>
+                <input type={"submit"} value={"Submit"}></input>
+            </form>
+
         </div>
     );
 }
