@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express';
 import {Coordinates} from "../../Interfaces/coordinates";
 import {getCoordinate, getWeatherByCoordinates} from "../../weather";
-import {getPoints, getRoute} from "../../map-api";
+import {getCity, getPoints, getRoute} from "../../map-api";
 import {RoutePoint} from "../../Interfaces/route-point";
 import {WeatherInterface} from "../../Interfaces/weatherInterface";
 import {PointDescription} from "../../Interfaces/point-description";
@@ -45,19 +45,26 @@ weatherRouter.get('/', function (req: Request, res: Response) {
                     }
                     Promise.all(promises)
                         .then((weather: WeatherInterface[]) => {
-                            let points: PointDescription[] = []
+                            let citiesPromises: Promise<string>[] = []
                             for (let i = 0; i < weather.length; i++) {
-                                const pointDescription: PointDescription = {
-                                    coordinate: routeCoordinates[i].coordinate,
-                                    date: weather[i].time,
-                                    city: 'tbilisi',
-                                    weather: weather[i]
-                                }
-                                points.push(pointDescription)
+                                citiesPromises.push(getCity(routeCoordinates[i].coordinate.lat, routeCoordinates[i].coordinate.lng))
                             }
-                            res.send({
-                                weathers: points
-                            })
+                            Promise.all(citiesPromises)
+                                .then((values: string[]) => {
+                                    let points: PointDescription[] = []
+                                    for (let i = 0; i < values.length; i++) {
+                                        const pointDescription: PointDescription = {
+                                            coordinate: routeCoordinates[i].coordinate,
+                                            date: weather[i].time,
+                                            city: values[i],
+                                            weather: weather[i]
+                                        }
+                                        points.push(pointDescription)
+                                    }
+                                    res.send({
+                                        weathers: points
+                                    })
+                                })
                         })
 
                 })

@@ -97,3 +97,13 @@ export function getPoints(coordinates: Coordinates[]): Promise<RoutePoint[]> {
     }
     return fetchPoints(coordinatesString)
 }
+
+export function getCity(lat: string, lon: string): Promise<string> {
+    const option = {
+        method: 'GET',
+        url: `https://api-bdc.net/data/reverse-geocode?latitude=${lat}&longitude=${lon}&localityLanguage=en&key=bdc_c044b1614636419e9cdfacd4be4a48f6`
+    };
+    return axios.request(option).then((response: AxiosResponse) => {
+        return response.data.city
+    })
+}
