@@ -4,13 +4,11 @@ import React from 'react';
 
 interface InputProps {
     className: string
-    placeholder: string
-    name: String
 }
 
-const TextField = ({className}: InputProps, {placeholder}: InputProps) => {
+const TextField = ({className}: InputProps) => {
     return (
-        <input className={className} placeholder={placeholder} type="text" id="source" name="name"/>
+        <input className={className} placeholder="Destination" type="text" id="city" name="city"/>
     )
 }
 export default TextField;
