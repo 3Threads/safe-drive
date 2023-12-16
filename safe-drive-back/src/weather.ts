@@ -1,21 +1,23 @@
 import axios, {AxiosResponse} from "axios";
 
 
-export function get_weather(lat: number, lon: number) {
-    const option = {
-        method: 'GET',
-        url: "https://api.open-meteo.com/v1/forecast",
-        params: {
-            "latitude": lat,
-            "longitude": lon,
-            "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility", "wind_speed_180m", "wind_direction_180m", "temperature_180m"]
-        }
-    };
-    return axios.request(option).then((response: AxiosResponse) => {
+export function get_weather(city: string) {
+    get_lat_and_lon(city).then(async (x: any) => {
+        const option = {
+            method: 'GET',
+            url: "https://api.open-meteo.com/v1/forecast",
+            params: {
+                "latitude": x.latitude,
+                "longitude": x.longitude,
+                "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility", "wind_speed_180m", "wind_direction_180m", "temperature_180m"]
+            }
+        };
+        const response = await axios.request(option);
         return response.data;
-    })
+    });
 }
-export function get_lat_and_lon(city: string) {
+
+function get_lat_and_lon(city: string) {
 
     const option = {
         method: 'GET',
