@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "cd safe-drive-back && yarn build && cd ../safe-drive-front && yarn build",
+    "build": "cd safe-drive-back && yarn build",
     "build-back": "cd safe-drive-back && yarn build",
     "build-front": "cd safe-drive-front && yarn build",
     "start-back": "cd safe-drive-back && yarn build && yarn start",

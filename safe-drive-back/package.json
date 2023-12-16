@@ -5,6 +5,6 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node lib/src/main.js"
+    "start": "node lib/src/api/app.js"
   }
 }
