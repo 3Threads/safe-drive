@@ -1,17 +1,21 @@
-// TextField.js
 import React from 'react';
 
-
-interface InputProps {
-    className: string;
-    placeholder: string;
-    name: string;
+interface TextFieldProps {
+  type: string;
+  className: string;
+  id: string;
+  placeholder?: string; // Make the placeholder prop optional
 }
 
-const TextField: React.FC<InputProps> = ({className, placeholder}) => {
-    return (
-        <input type="text" className={className} placeholder={placeholder} id="source" name="name"/>
-    )
+const TextField: React.FC<TextFieldProps> = ({ type, className, id, placeholder }) => {
+  return (
+    <input
+      type={type}
+      className={className}
+      id={id}
+      placeholder={placeholder} // Render the placeholder if provided
+    />
+  );
 };
 
 export default TextField;
