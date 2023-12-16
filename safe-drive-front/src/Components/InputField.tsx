@@ -8,8 +8,8 @@ interface InputProps{
 }
 
 const TextField = ({placeholder}: InputProps) => {
-    return(
+    return (
         <input placeholder={placeholder} type="text" id="source" name="name"/>
     )
 }
-export default TextField;
+    export default TextField;
