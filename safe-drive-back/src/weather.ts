@@ -11,7 +11,7 @@ import {WeatherInterface} from "./Interfaces/weather-interface";
 //                 url: "https://api.open-meteo.com/v1/forecast",
 //                 params: {
 //                     "latitude": x.lat,
-//                     "longitude": x.long,
+//                     "longitude": x.lng,
 //                     "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility", "wind_speed_180m", "wind_direction_180m", "temperature_180m"]
 //                 }
 //             };
@@ -30,7 +30,7 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
         url: "https://api.open-meteo.com/v1/forecast",
         params: {
             "latitude": coordinate.lat,
-            "longitude": coordinate.long,
+            "longitude": coordinate.lng,
             "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility", "wind_speed_180m", "wind_direction_180m", "temperature_180m"]
         }
     };
@@ -83,7 +83,7 @@ export function getCoordinate(city: string): Promise<Coordinates> {
         },
     };
     return axios.request(option).then((response: AxiosResponse) => {
-        const coordinate: Coordinates = {lat: response.data[0].latitude, long: response.data[0].longitude}
+        const coordinate: Coordinates = {lat: response.data[0].latitude, lng: response.data[0].longitude}
         return coordinate;
     })
 }
