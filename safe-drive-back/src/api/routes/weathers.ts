@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express';
 import {Coordinates} from "../../Interfaces/coordinates";
 import {getCoordinate} from "../../weather";
+import {getRoute} from "../../map-api";
 
 export const weatherRouter = express.Router();
 
@@ -24,9 +25,13 @@ weatherRouter.get('/', function (req: Request, res: Response) {
 
     getCoordinatesList(cities)
         .then((coordinates: Coordinates[]) => {
-            res.send({
-                coordinates: coordinates
-            })
+            getRoute(coordinates, 200)
+                .then((routeCoordinates: Coordinates[]) => {
+                    res.send({
+                        coordinates: coordinates,
+                        route: routeCoordinates
+                    })
+                })
         })
 
 })
