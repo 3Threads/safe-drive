@@ -16,6 +16,7 @@ const TextField: React.FC<TextFieldProps> = ({ type, className, id, placeholder 
       placeholder={placeholder} // Render the placeholder if provided
     />
   );
+
 };
 
 export default TextField;
