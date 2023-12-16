@@ -1,27 +1,14 @@
-import {AxiosResponse} from "axios";
+import {fetchInfo, getRoute} from "./map-api";
 
-import axios from "axios";
 
 const tbilisi: string = "41.6938,44.8015;"
 const batumi: string = '41.6461,41.6405;'
 
-const options = {
-    method: 'GET',
-    url: 'https://trueway-directions2.p.rapidapi.com/FindDrivingRoute',
-    params: {
-        stops: tbilisi + batumi
-    },
-    headers: {
-        'X-RapidAPI-Key': 'e3fc70ca95msh0c1271a45bc037fp13f1eajsn7c9aa6fa0095',
-        'X-RapidAPI-Host': 'trueway-directions2.p.rapidapi.com'
-    }
-};
 
-axios.request(options)
-    .then((response: AxiosResponse) => {
-        console.log(response.data.route.legs[0].steps);
+fetchInfo(tbilisi, batumi)
+    .then((fetchedInfo: string[][]) => {
+        const points: string[] = getRoute(fetchedInfo, 100)
+        points.forEach(point => {
+            console.log(point)
+        })
     })
-    .catch((error: any) => {
-            console.error(error)
-        }
-    )
