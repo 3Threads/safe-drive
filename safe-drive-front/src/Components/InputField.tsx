@@ -3,12 +3,15 @@ import React from 'react';
 
 
 interface InputProps {
-    className: string
+    className: string;
+    placeholder: string;
+    name: string;
 }
 
-const TextField = ({className}: InputProps) => {
+const TextField: React.FC<InputProps> = ({className, placeholder}) => {
     return (
-        <input className={className} placeholder="Destination" type="text" id="city" name="city"/>
+        <input type="text" className={className} placeholder={placeholder} id="source" name="name"/>
     )
-}
+};
+
 export default TextField;

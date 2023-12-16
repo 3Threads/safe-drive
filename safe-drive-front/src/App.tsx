@@ -4,14 +4,14 @@ import TextField from './Components/InputField'; // Assuming this is your TextFi
 
 const App: React.FC = () => {
     const [textFields, setTextFields] = useState([
-        <TextField className={"col-7 mt-2"}/>,
+        <TextField key={0} className={"col-7 mt-2"} placeholder={"Destination"} name='Destination'/>,
     ]);
 
     const addNewTextField = () => {
         const newIndex = textFields.length;
         setTextFields([
             ...textFields,
-            <TextField className={"col-7 mt0"} key={newIndex}/>,
+            <TextField key={newIndex} className={"col-7 mt0"} placeholder={'Destination'} name={'destination'}/>,
         ]);
     };
 
@@ -21,8 +21,8 @@ const App: React.FC = () => {
                 <div className="col-6">
                     {/* Left Side: Source and Destinations Input */}
                     <form method="get" action="/">
-                        <input className={"col-6"} placeholder={'Source'} name={'source'}/>
-                        <br />
+                        <TextField className={"col-6"} placeholder={'Source'} name={'source'}/>
+                        <br/>
                         {textFields}
                         <button className="btn btn-primary mt-2" type="button" onClick={addNewTextField}>
                             Add Destination
@@ -33,7 +33,6 @@ const App: React.FC = () => {
                         </button>
                     </form>
                 </div>
-
 
 
                 <div className="col-6">
