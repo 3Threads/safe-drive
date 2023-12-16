@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import {Coordinates} from "./Interfaces/coordinates";
-import {WeatherInterface} from "./Interfaces/weather-interface";
+import {WeatherInterface} from "./Interfaces/weatherInterface";
 //
 //
 // export function get_weather(city: string): Promise<any> {
@@ -24,7 +24,7 @@ import {WeatherInterface} from "./Interfaces/weather-interface";
 //         });
 // }
 
-export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<any> {
+export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<WeatherInterface> {
     const option = {
         method: 'GET',
         url: "https://api.open-meteo.com/v1/forecast",
