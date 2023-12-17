@@ -58,7 +58,7 @@ const FormControl = (pros: FormPros) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-4 col-8">
-                <label htmlFor="source" className="form-label">
+                <label htmlFor="source" className="form-label" style={{color: 'white'}}>
                     Source location
                 </label>
                 <TextField type="source" className="form-control" id="source" value={startField}
@@ -67,7 +67,7 @@ const FormControl = (pros: FormPros) => {
             </div>
             <DropDownButton/>
             <div className="mb-4 col-12">
-                <label htmlFor="destination" className="form-label">
+                <label htmlFor="destination" className="form-label" style={{color: 'white'}}>
                     Destination
                 </label>
                 {destinationFields.map((value, index) => (

@@ -27,7 +27,12 @@ const CityData: React.FC<CityDataProps> = ({
         <tr>
             <th scope="row">{index}</th>
             <td>{time}</td>
-            <td><a href={'https://www.google.com/search?q='+coordinates.lat+'+'+coordinates.lng}>{location}</a></td>
+            <td style={{color: 'white'}}>
+                <a href={`https://www.google.com/search?q=${coordinates.lat}+${coordinates.lng}`}
+                   style={{color: 'white'}}>
+                    {location}
+                </a>
+            </td>
             <td>{degree}</td>
             <td>{weather}</td>
             <td>{condition}</td>

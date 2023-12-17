@@ -3,7 +3,8 @@ import sun from "../Images/sun.png";
 import CityData from "./CityData";
 import {PointDescription} from "../interfaces/point-description";
 // @ts-ignore
-import {WiDaySunny, WiDayShowers, WiDayRain, WiDaySnow, WiSnow, WiRain} from 'weather-icons-react';
+import {WiDaySunny, WiDayShowers, WiDayRain, WiDaySnow} from 'weather-icons-react';
+
 interface TableProps {
     cityData: PointDescription[];
 
@@ -14,8 +15,8 @@ const Table = (cityDatas: TableProps) => {
     return (
         <div>
             {/*<div className={"col-1"}> </div>*/}
-            <div className=" col-12 ">
-                <table className="table table-striped" style={{textAlign: 'center'}}>
+            <div className="col-12 ">
+                <table className="table table-dark table-striped" style={{textAlign: 'center'}}>
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -58,14 +59,10 @@ const Table = (cityDatas: TableProps) => {
                             time={item.date}
                             location={item.city}
                             degree={item.weather.temperature}
-                            weather={(!item.weather.precipitation && "Sunny") ||
-                                (item.weather.rain && "Rain") ||
-                                (item.weather.snowfall && "Snowfall") ||
-                                (item.weather.showers && "Heavy Rain")
-                        }
-                            condition={(item.weather.rain && <WiDayShowers size={30} color='#000' />) ||
-                                (item.weather.showers && <WiDayRain size={30} color='#000' />) ||
-                                (item.weather.snowfall && <WiSnow size={30} color='#000' />) ||
+                            weather={item.weather.precipitation.toString()}
+                            condition={(item.weather.rain && <WiDayRain size={30} color='#000' />) ||
+                                (item.weather.showers && <WiDayShowers size={30} color='#000' />) ||
+                                (item.weather.snowfall && <WiDaySnow size={30} color='#000' />) ||
                                 <WiDaySunny size={30} color='#000' />}
                             visibility={Math.round(parseInt(item.weather.visibility)).toString()+'%'}
                             coordinates={item.coordinate}
