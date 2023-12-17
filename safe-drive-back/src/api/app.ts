@@ -1,6 +1,6 @@
 import express, {NextFunction, Request, Response} from 'express'
 import cors from 'cors'
-import {weatherRouter} from "./routes/weathers";
+import {weatherRouter} from "./routes";
 
 const app = express()
 const port = 3636;
