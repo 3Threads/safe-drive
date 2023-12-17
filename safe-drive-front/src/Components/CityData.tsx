@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {Coordinates} from "../interfaces/coordinates";
+import React, {ReactComponentElement, useState} from 'react';
 
 interface CityDataProps {
     index: number;
@@ -7,7 +6,7 @@ interface CityDataProps {
     location: string;
     degree: number
     weather: string
-    condition?: string
+    condition?: any
     visibility: string
     coordinates: Coordinates
 }
@@ -27,11 +26,10 @@ const CityData: React.FC<CityDataProps> = ({
         <tr>
             <th scope="row">{index}</th>
             <td>{time}</td>
-            <td><a href={'https://www.google.com/search?q=' + coordinates.lat + '+' + coordinates.lng}>{location}</a>
-            </td>
+            <td>{location}</td>
             <td>{degree}</td>
             <td>{weather}</td>
-            <td><img src={condition} alt="Thunderstorm Weather" width="24" height="24"/></td>
+            <td>{condition}</td>
             <td>{visibility}</td>
         </tr>
     );

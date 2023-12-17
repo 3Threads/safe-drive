@@ -40,6 +40,7 @@
     "safe-drive-front"
   ],
   "devDependencies": {
-    "@types/cors": "^2.8.17"
+    "@types/cors": "^2.8.17",
+    "weather-icons-react": "^1.2.0"
   }
 }

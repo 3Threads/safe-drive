@@ -24,10 +24,10 @@ import {WeatherInterface} from "./Interfaces/weatherInterface";
 //         });
 // }
 function getVisibility(visibility: number): string {
-    if(visibility > 20000) {
+    if(visibility > 5000) {
         return "100%";
     } else {
-        return ((visibility/20000)*100).toString() + "%"
+        return ((visibility/5000)*100).toString() + "%"
     }
 }
 export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<WeatherInterface> {
