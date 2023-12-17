@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import TextField from './InputField';
 import {PointDescription} from "../interfaces/point-description";
-import BasicDateTimePicker from "./BasicDateTimePicker";
 import DropDownButton from "./DropDownButton";
 
-interface FormPros{
-    setData:any
+interface FormPros {
+    setData: any
 }
-const FormControl = (pros : FormPros) => {
+
+const FormControl = (pros: FormPros) => {
     const [destinationFields, setDestinationFields] = useState(['']); // Initial state with an empty destination field
     const [startField, setStartField] = useState(''); // Initial state with an empty destination field
 
@@ -16,6 +16,7 @@ const FormControl = (pros : FormPros) => {
     };
 
     const removeTextField = (index: number) => {
+        if (destinationFields.length === 1) return;
         setDestinationFields(prevFields => prevFields.filter((_, i) => i !== index));
     };
 
@@ -55,7 +56,7 @@ const FormControl = (pros : FormPros) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="mb-4 col-4">
+            <div className="mb-4 col-8">
                 <label htmlFor="source" className="form-label">
                     Source location
                 </label>
@@ -64,45 +65,45 @@ const FormControl = (pros : FormPros) => {
                 />
             </div>
             <DropDownButton/>
-            <div className="mb-4 col-10">
+            <div className="mb-4 col-12">
                 <label htmlFor="destination" className="form-label">
                     Destination
                 </label>
                 {destinationFields.map((value, index) => (
                     <div key={index} className="input-group">
-                        <div className={"col-7"}>
+                        <div className={"col-9"}>
                             <TextField
                                 type="destination"
-                                className="form-control"
+                                className="form-control mt-2"
                                 value={value}
                                 onChange={(e: any) => handleDestinationChange(index, e.target.value)}
                                 id={'destination'}/>
                         </div>
                         <div className="col-1"></div>
-                        <div className="col-4">
+                        <div className="col-2">
                             <button
                                 className="col-12 btn btn-danger col-auto mt-2"
                                 type="button"
                                 onClick={() => removeTextField(index)}
                             >
-                                Remove
+                                -
                             </button>
                         </div>
                     </div>
                 ))}
 
                 <div className="input-group">
-                    <div className={"col-7"}>
+                    <div className={"col-9"}>
 
                     </div>
                     <div className="col-1"></div>
-                    <div className="col-4">
+                    <div className="col-2">
                         <button
                             className="col-12 btn btn-primary col-auto mt-2"
                             type="button"
                             onClick={addNewTextField}
                         >
-                            Add Destination
+                            +
                         </button>
                     </div>
                 </div>

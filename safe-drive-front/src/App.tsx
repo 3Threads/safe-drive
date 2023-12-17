@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TextField from './Components/InputField';
-import FormControl from "./Components/FormControl";
 import {PointDescription} from "./interfaces/point-description";
 import Table from "./Components/Table";
-import DropDownButton from "./Components/DropDownButton"; // Assuming this is your TextField component
+import OffCanvas from "./Components/OffCanvas"; // Assuming this is your TextField component
 
 const App: React.FC = () => {
 
@@ -13,7 +11,7 @@ const App: React.FC = () => {
         <div className="container mt-4">
             <div className="row">
                 <div className="col-6">
-                    <FormControl setData={setData}/>
+                    <OffCanvas setData={setData}/>
                 </div>
 
                 <Table cityData={data}/>

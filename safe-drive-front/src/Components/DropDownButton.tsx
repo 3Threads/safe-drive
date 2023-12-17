@@ -28,7 +28,8 @@ function DropDownButton() {
                 </Dropdown.Menu>
             </Dropdown>
 
-            {selectedItem === 'notNow' && <div className={"col-6"}><BasicDateTimePicker/></div>}
+            {selectedItem === 'now' && <div className={"col-12 mb-2"}></div>}
+            {selectedItem === 'notNow' && <div className={"col-12 mb-2"}><BasicDateTimePicker/></div>}
         </div>
     );
 }
