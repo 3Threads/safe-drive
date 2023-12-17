@@ -23,7 +23,13 @@ import {WeatherInterface} from "./Interfaces/weatherInterface";
 //             // return response.data;
 //         });
 // }
-
+function getVisibility(visibility: number): string {
+    if(visibility > 20000) {
+        return "100%";
+    } else {
+        return ((visibility/20000)*100).toString() + "%"
+    }
+}
 export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<WeatherInterface> {
     const option = {
         method: 'GET',
@@ -31,7 +37,7 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
         params: {
             "latitude": coordinate.lat,
             "longitude": coordinate.lng,
-            "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility", "wind_speed_180m", "wind_direction_180m", "temperature_180m"]
+            "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility"]
         }
     };
     return axios.request(option)
@@ -44,12 +50,9 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
                 rain: 0,
                 showers: 0,
                 snowfall: 0,
-                temperature_180m: 0,
-                temperature_2m: 0,
+                temperature: 0,
                 time: "",
-                visibility: 0,
-                wind_direction_180m: 0,
-                wind_speed_180m: 0
+                visibility: "",
             };
             for(let i = 0; i<response.data.hourly.time.length; i++) {
                 if(response.data.hourly.time[i] === d) {
@@ -60,11 +63,8 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
                     weath.rain = response.data.hourly.rain[i];
                     weath.showers = response.data.hourly.showers[i];
                     weath.snowfall = response.data.hourly.snowfall[i];
-                    weath.temperature_180m = response.data.hourly.temperature_180m[i];
-                    weath.temperature_2m =  response.data.hourly.temperature_2m[i];
-                    weath.visibility = response.data.hourly.visibility[i];
-                    weath.wind_direction_180m = response.data.hourly.wind_direction_180m[i];
-                    weath.wind_speed_180m = response.data.hourly.wind_speed_180m[i];
+                    weath.temperature =  response.data.hourly.temperature_2m[i];
+                    weath.visibility = getVisibility(response.data.hourly.visibility[i]);
                     break;
                 }
             }
