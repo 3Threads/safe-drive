@@ -1,6 +1,6 @@
 export interface WeatherInterface {
-    time: string;
-    temperature: number,
+    time: string; //+
+    temperature: number, //+
     apparent_temperature: number,
     precipitation_probability: number,
     precipitation: number,

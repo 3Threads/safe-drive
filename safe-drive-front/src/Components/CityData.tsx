@@ -7,10 +7,11 @@ interface CityDataProps {
     degree: number
     weather: string
     condition?: string
+    visibility: string
 }
 
 
-const CityData: React.FC<CityDataProps> = ({ index, time, location, degree, weather, condition }) => {
+const CityData: React.FC<CityDataProps> = ({ index, time, location, degree, weather, condition , visibility}) => {
     return (
         <tr>
             <th scope="row">{index}</th>
@@ -19,6 +20,7 @@ const CityData: React.FC<CityDataProps> = ({ index, time, location, degree, weat
             <td>{degree}</td>
             <td>{weather}</td>
             <td><img src={condition} alt="Thunderstorm Weather" width="24" height="24"/></td>
+            <td>{visibility}</td>
         </tr>
     );
 
