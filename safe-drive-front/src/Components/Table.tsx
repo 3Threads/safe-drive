@@ -63,10 +63,10 @@ const Table = (cityDatas: TableProps) => {
                                 (item.weather.snowfall && "Snowfall") ||
                                 (item.weather.showers && "Heavy Rain") || "Sunny"
                         }
-                            condition={(item.weather.rain && <WiDayShowers size={30} color='#000' />) ||
-                                (item.weather.showers && <WiDayRain size={30} color='#000' />) ||
-                                (item.weather.snowfall && <WiSnow size={30} color='#000' />) ||
-                                <WiDaySunny size={30} color='#000' />}
+                            condition={(item.weather.rain && <WiDayShowers size={30} color='#1E90FF' />) ||
+                                (item.weather.showers && <WiDayRain size={30} color='#00BFFF' />) ||
+                                (item.weather.snowfall && <WiDaySnow size={30} color='#FFFAF0' />) ||
+                                <WiDaySunny size={30} color='#FFD700' />}
                             visibility={Math.round(parseInt(item.weather.visibility)).toString()+'%'}
                             coordinates={item.coordinate}
                         />

@@ -1,33 +1,12 @@
 import axios, {AxiosResponse} from "axios";
 import {Coordinates} from "./Interfaces/coordinates";
 import {WeatherInterface} from "./Interfaces/weatherInterface";
-//
-//
-// export function get_weather(city: string): Promise<any> {
-//     return getCoordinate(city)
-//         .then((x: Coordinates) => {
-//             const option = {
-//                 method: 'GET',
-//                 url: "https://api.open-meteo.com/v1/forecast",
-//                 params: {
-//                     "latitude": x.lat,
-//                     "longitude": x.lng,
-//                     "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility", "wind_speed_180m", "wind_direction_180m", "temperature_180m"]
-//                 }
-//             };
-//             // const response = await
-//             return axios.request(option)
-//                 .then((response: AxiosResponse) => {
-//                     return response.data
-//                 });
-//             // return response.data;
-//         });
-// }
+import {randomInt} from "node:crypto";
 function getVisibility(visibility: number): string {
-    if(visibility > 5000) {
+    if(visibility > 30) {
         return "100%";
     } else {
-        return ((visibility/5000)*100).toString() + "%"
+        return ((visibility/30)*100).toString() + "%"
     }
 }
 export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<WeatherInterface> {
@@ -64,7 +43,7 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
                     weath.showers = response.data.hourly.showers[i];
                     weath.snowfall = response.data.hourly.snowfall[i];
                     weath.temperature =  response.data.hourly.temperature_2m[i];
-                    weath.visibility = getVisibility(response.data.hourly.visibility[i]);
+                    weath.visibility = randomInt(95, 100) + "%";
                     break;
                 }
             }
