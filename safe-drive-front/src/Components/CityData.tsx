@@ -6,7 +6,7 @@ interface CityDataProps {
     time: string;
     location: string;
     degree: number
-    weather: string
+    weather: any
     condition?: any
     visibility: string
     coordinates: Coordinates
