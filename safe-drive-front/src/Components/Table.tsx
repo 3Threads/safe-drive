@@ -58,10 +58,9 @@ const Table = (cityDatas: TableProps) => {
                             time={item.date}
                             location={item.city}
                             degree={item.weather.temperature}
-                            weather={(!item.weather.precipitation && "Sunny") ||
-                                (item.weather.rain && "Rain") ||
+                            weather={(item.weather.rain && "Rain") ||
                                 (item.weather.snowfall && "Snowfall") ||
-                                (item.weather.showers && "Heavy Rain")
+                                (item.weather.showers && "Heavy Rain") || "Sunny"
                         }
                             condition={(item.weather.rain && <WiDayShowers size={30} color='#000' />) ||
                                 (item.weather.showers && <WiDayRain size={30} color='#000' />) ||
