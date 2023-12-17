@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ReactComponentElement, useState} from 'react';
 
 interface CityDataProps {
     index: number;
@@ -6,7 +6,7 @@ interface CityDataProps {
     location: string;
     degree: number
     weather: string
-    condition?: string
+    condition?: any
     visibility: string
 }
 
@@ -19,7 +19,7 @@ const CityData: React.FC<CityDataProps> = ({ index, time, location, degree, weat
             <td>{location}</td>
             <td>{degree}</td>
             <td>{weather}</td>
-            <td><img src={condition} alt="Thunderstorm Weather" width="24" height="24"/></td>
+            <td>{condition}</td>
             <td>{visibility}</td>
         </tr>
     );

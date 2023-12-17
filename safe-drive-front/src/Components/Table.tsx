@@ -2,13 +2,15 @@ import React from 'react';
 import sun from "../Images/sun.png";
 import CityData from "./CityData";
 import {PointDescription} from "../interfaces/point-description";
-
+// @ts-ignore
+import {WiDaySunny, WiDayShowers, WiDayRain, WiDaySnow} from 'weather-icons-react';
 interface TableProps {
     cityData: PointDescription[];
 
 }
 
 const Table = (cityDatas: TableProps) => {
+    // @ts-ignore
     return (
         <div>
             {/*<div className={"col-1"}> </div>*/}
@@ -57,6 +59,10 @@ const Table = (cityDatas: TableProps) => {
                             location={item.city}
                             degree={item.weather.temperature}
                             weather={item.weather.precipitation.toString()}
+                            condition={(item.weather.rain && <WiDayRain size={30} color='#000' />) ||
+                                (item.weather.showers && <WiDayShowers size={30} color='#000' />) ||
+                                (item.weather.snowfall && <WiDaySnow size={30} color='#000' />) ||
+                                <WiDaySunny size={30} color='#000' />}
                             visibility={item.weather.visibility}
                         />
                     ))}
@@ -69,5 +75,4 @@ const Table = (cityDatas: TableProps) => {
     );
 
 };
-
 export default Table;
