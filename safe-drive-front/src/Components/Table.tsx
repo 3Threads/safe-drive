@@ -14,7 +14,7 @@ const Table = (cityDatas: TableProps) => {
     return (
         <div>
             {/*<div className={"col-1"}> </div>*/}
-            <div className=" col-10 ">
+            <div className=" col-12 ">
                 <table className="table table-striped" style={{textAlign: 'center'}}>
                     <thead>
                     <tr>
@@ -63,7 +63,7 @@ const Table = (cityDatas: TableProps) => {
                                 (item.weather.showers && <WiDayShowers size={30} color='#000' />) ||
                                 (item.weather.snowfall && <WiDaySnow size={30} color='#000' />) ||
                                 <WiDaySunny size={30} color='#000' />}
-                            visibility={item.weather.visibility}
+                            visibility={Math.round(parseInt(item.weather.visibility)).toString()+'%'}
                             coordinates={item.coordinate}
                         />
                     ))}

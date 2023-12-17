@@ -11,7 +11,7 @@ const App: React.FC = () => {
         <div className="container mt-4">
             <div className="row">
                 <div className="col-6">
-                    <OffCanvas setData={setData}/>
+                    <OffCanvas setData={setData} handleClose={() => {}} />
                 </div>
 
                 <Table cityData={data}/>

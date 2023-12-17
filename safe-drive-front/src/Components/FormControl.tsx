@@ -4,7 +4,8 @@ import {PointDescription} from "../interfaces/point-description";
 import DropDownButton from "./DropDownButton";
 
 interface FormPros {
-    setData: any
+  setData: any;
+  handleClose: () => void; // Add handleClose prop type
 }
 
 const FormControl = (pros: FormPros) => {
@@ -49,9 +50,9 @@ const FormControl = (pros: FormPros) => {
 
 
     const handleSubmit = (e: any) => {
+        pros.handleClose();
         e.preventDefault();
         fetchData();
-
     };
 
     return (
