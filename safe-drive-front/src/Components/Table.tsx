@@ -58,6 +58,7 @@ const Table = (cityDatas: TableProps) => {
                             degree={item.weather.temperature}
                             weather={item.weather.precipitation.toString()}
                             visibility={item.weather.visibility}
+                            coordinates={item.coordinate}
                         />
                     ))}
 
