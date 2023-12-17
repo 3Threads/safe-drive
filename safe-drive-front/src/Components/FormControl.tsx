@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import TextField from './InputField';
 import {PointDescription} from "../interfaces/point-description";
+import BasicDateTimePicker from "./BasicDateTimePicker";
+import DropDownButton from "./DropDownButton";
 
 interface FormPros{
     setData:any
@@ -61,7 +63,7 @@ const FormControl = (pros : FormPros) => {
                            onChange={(e: any) => handleStartChange(e.target.value)}
                 />
             </div>
-
+            <DropDownButton/>
             <div className="mb-4 col-10">
                 <label htmlFor="destination" className="form-label">
                     Destination

@@ -12,6 +12,13 @@
     "start-front": "cd safe-drive-front && yarn start"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.0",
+    "@mui/x-date-pickers": "^6.18.5",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
+    "react-bootstrap": "^2.9.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
