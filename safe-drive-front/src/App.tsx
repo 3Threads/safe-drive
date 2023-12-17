@@ -1,17 +1,19 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TextField from './Components/InputField';
-import FormControl from "./Components/FormControl"; // Assuming this is your TextField component
+import FormControl from "./Components/FormControl";
+import {PointDescription} from "./interfaces/point-description";
 
 const App: React.FC = () => {
 
+    const [data, setData] = useState<PointDescription[]>();
     return (
         <div className="container mt-4">
             <div className="row">
                 <div className="col-6">
-                    <FormControl />
+                    <FormControl setData={setData}/>
                 </div>
-
+                {data !== undefined && data.toString()}
 
                 <div className=" col-6">
                     {/* Right Side: Table for Information */}

@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
-import TextField from './InputField'; // Replace with the actual import
+import TextField from './InputField';
+import {PointDescription} from "../interfaces/point-description";
 
-const FormControl = () => {
+interface FormPros{
+    setData:any
+}
+const FormControl = (pros : FormPros) => {
     const [destinationFields, setDestinationFields] = useState(['']); // Initial state with an empty destination field
     const [startField, setStartField] = useState(''); // Initial state with an empty destination field
 
@@ -28,17 +32,13 @@ const FormControl = () => {
     };
 
 
-    const [data, setData] = useState(null);
-    const [cityValues, setCityValues] = useState(['', '', '', '', '']);
-
     const fetchData = async () => {
         try {
             // Construct the URL with the values from the array
             const queryString = `city=${startField}&` + destinationFields.map(city => `city=${city}`).join('&');
             const response = await fetch(`http://localhost:3636/?${queryString}`);
-            const result = await response.json();
-            setData(result);
-            console.log(result)
+            const result = (await response.json()).weathers as PointDescription[];
+            pros.setData(result);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
