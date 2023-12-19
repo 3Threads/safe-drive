@@ -12,38 +12,38 @@ function getVisibility(visibility: number): string {
 export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<WeatherInterface> {
     const option = {
         method: 'GET',
-        url: "https://api.open-meteo.com/v1/forecast",
+        url: "http://api.weatherapi.com/v1/forecast.json",
         params: {
-            "latitude": coordinate.lat,
-            "longitude": coordinate.lng,
-            "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "visibility"]
+            "key": "851bbeea69c140d9abf165156231912",
+            "q": `${coordinate.lat},${coordinate.lng}`,
+            "days": 2,
+            "aqi" : "no",
+            "alerts":"yes"
         }
     };
     return axios.request(option)
         .then((response: AxiosResponse) => {
             var d : string = get_full_date(date, time)
             var weath: WeatherInterface = {
-                apparent_temperature: 0,
                 precipitation: 0,
-                precipitation_probability: 0,
-                rain: 0,
-                showers: 0,
-                snowfall: 0,
                 temperature: 0,
                 time: "",
                 visibility: "",
+                condition: "",
+                condition_img: "",
             };
-            for(let i = 0; i<response.data.hourly.time.length; i++) {
-                if(response.data.hourly.time[i] === d) {
-                    weath.time = response.data.hourly.time[i];
-                    weath.apparent_temperature =  response.data.hourly.apparent_temperature[i];
-                    weath.precipitation = response.data.hourly.precipitation[i];
-                    weath.precipitation_probability = response.data.hourly.precipitation_probability[i];
-                    weath.rain = response.data.hourly.rain[i];
-                    weath.showers = response.data.hourly.showers[i];
-                    weath.snowfall = response.data.hourly.snowfall[i];
-                    weath.temperature =  response.data.hourly.temperature_2m[i];
-                    weath.visibility = randomInt(95, 100) + "%";
+            for(let i = 0; i<response.data.forecast.forecastday.length; i++) {
+                if(response.data.forecast.forecastday[i].date === date) {
+                    for(let j = 0; j < response.data.forecast.forecastday[i].hour.length; j++) {
+                        if(response.data.forecast.forecastday[i].hour[j].time.split(" ")[1] == time) {
+                            weath.time = response.data.forecast.forecastday[i].hour[j].time;
+                            weath.precipitation =response.data.forecast.forecastday[i].hour[j].precip_mm;
+                            weath.temperature = response.data.forecast.forecastday[i].hour[j].feelslike_c
+                            weath.visibility =  response.data.forecast.forecastday[i].hour[j].vis_km;
+                            weath.condition = response.data.forecast.forecastday[i].hour[j].condition.text;
+                            weath.condition_img = response.data.forecast.forecastday[i].hour[j].condition.icon;
+                        }
+                    }
                     break;
                 }
             }

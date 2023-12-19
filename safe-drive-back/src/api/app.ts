@@ -2,6 +2,8 @@ import express, {NextFunction, Request, Response} from 'express'
 import cors from 'cors'
 import {weatherRouter} from "./routes";
 import {getCity} from "../map-api";
+import {getWeatherByCoordinates} from "../weather";
+import {Coordinates} from "../Interfaces/coordinates"
 
 const app = express()
 const port = 3636;
@@ -9,7 +11,6 @@ const port = 3636;
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cors())
-
 app.get('/health', (req, res) => {
     res.status(200).send()
 })

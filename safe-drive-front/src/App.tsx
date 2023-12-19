@@ -4,11 +4,13 @@ import { PointDescription } from './interfaces/point-description';
 import Table from './Components/Table';
 import OffCanvas from './Components/OffCanvas';
 import logo from './Images/logo.png';
+import LoadingIcons, {Oval} from 'react-loading-icons'
 
 const App: React.FC = () => {
   const [data, setData] = useState<PointDescription[]>([]);
 
   return (
+
     <div className="bg-dark text-center"> {/* Centering the logo */}
       <div className="container">
         <img src={logo} alt="Logo" style={{ paddingTop:'20px', width: '300px' }} /> {/* Adjusting the width */}

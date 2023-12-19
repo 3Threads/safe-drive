@@ -35,7 +35,7 @@ const CityData: React.FC<CityDataProps> = ({
             </td>
             <td>{degree}</td>
             <td>{weather}</td>
-            <td>{condition}</td>
+            <td><img alt="weather-icon" src={condition} /></td>
             <td>{visibility}</td>
         </tr>
     );

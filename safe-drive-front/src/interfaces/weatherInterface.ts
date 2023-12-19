@@ -1,11 +1,8 @@
 export interface WeatherInterface {
-    time: string;
-    temperature: number,
-    apparent_temperature: number,
-    precipitation_probability: number,
+    time: string; //+
+    temperature: number, //+
     precipitation: number,
-    rain: number,
-    showers: number,
-    snowfall: number,
+    condition: string,
+    condition_img: string,
     visibility: string,
 }

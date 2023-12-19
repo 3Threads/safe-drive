@@ -23,8 +23,8 @@ const Table = (cityDatas: TableProps) => {
                         <th scope="col">Time</th>
                         <th scope="col">Location</th>
                         <th scope="col">°C</th>
-                        <th scope="col">weather</th>
-                        <th scope="col">Conditions</th>
+                        <th scope="col">Weather</th>
+                        <th scope="col">Condition</th>
                         <th scope="col">Visibility</th>
                     </tr>
                     </thead>
@@ -59,15 +59,9 @@ const Table = (cityDatas: TableProps) => {
                             time={item.date}
                             location={item.city}
                             degree={item.weather.temperature}
-                            weather={(item.weather.rain && "Rain") ||
-                                (item.weather.snowfall && "Snowfall") ||
-                                (item.weather.showers && "Heavy Rain") || "Sunny"
-                        }
-                            condition={(item.weather.rain && <WiDayShowers size={30} color='#1E90FF' />) ||
-                                (item.weather.showers && <WiDayRain size={30} color='#00BFFF' />) ||
-                                (item.weather.snowfall && <WiDaySnow size={30} color='#FFFAF0' />) ||
-                                <WiDaySunny size={30} color='#FFD700' />}
-                            visibility={Math.round(parseInt(item.weather.visibility)).toString()+'%'}
+                            weather={item.weather.condition}
+                            condition={item.weather.condition_img}
+                            visibility={item.weather.visibility + "km"}
                             coordinates={item.coordinate}
                         />
                     ))}
