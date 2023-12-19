@@ -37,37 +37,20 @@ weatherRouter.get('/', function (req: Request, res: Response) {
                 .then((routeCoordinates: RoutePoint[]) => {
                     const date = new Date(new Date().getTime() + 4 * 60 * 60 * 1000);
 
-                    let promises: Promise<WeatherInterface>[] = []
+                    let promises: Promise<PointDescription>[] = []
                     for (let i = 0; i < routeCoordinates.length; i++) {
                         const currDate = roundToHour(new Date(date.getTime() + routeCoordinates[i].duration * 1000))
                         let dateArr: string[] = currDate.toISOString().split("T")
                         promises.push(getWeatherByCoordinates(routeCoordinates[i].coordinate, dateArr[0], dateArr[1].substring(0, 5)))
                     }
                     Promise.all(promises)
-                        .then((weather: WeatherInterface[]) => {
-                            let citiesPromises: Promise<string>[] = []
-                            for (let i = 0; i < weather.length; i++) {
-                                citiesPromises.push(getCity(routeCoordinates[i].coordinate.lat, routeCoordinates[i].coordinate.lng))
-                            }
-                            Promise.all(citiesPromises)
-                                .then((values: string[]) => {
-                                    let points: PointDescription[] = []
-                                    for (let i = 0; i < values.length; i++) {
-                                        const pointDescription: PointDescription = {
-                                            coordinate: routeCoordinates[i].coordinate,
-                                            date: weather[i].time,
-                                            city: values[i],
-                                            weather: weather[i]
-                                        }
-                                        points.push(pointDescription)
-                                    }
-                                    res.send({
-                                        weathers: points
-                                    })
-                                })
+                        .then((weather: PointDescription[]) => {
+
+                            res.send({
+                                weathers: weather
+                            })
                         })
-
                 })
-        })
 
+        })
 })

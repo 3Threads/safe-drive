@@ -1,8 +1,9 @@
 import axios, {AxiosResponse} from "axios";
 import {Coordinates} from "./Interfaces/coordinates";
 import {WeatherInterface} from "./Interfaces/weatherInterface";
+import {PointDescription} from "./Interfaces/point-description";
 
-export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<WeatherInterface> {
+export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<PointDescription> {
     const option = {
         method: 'GET',
         url: "http://api.weatherapi.com/v1/forecast.json",
@@ -24,6 +25,8 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
                 condition: "",
                 condition_img: "",
             };
+            // console.log(response)
+
             for (let i = 0; i < response.data.forecast.forecastday.length; i++) {
                 if (response.data.forecast.forecastday[i].date === date) {
                     for (let j = 0; j < response.data.forecast.forecastday[i].hour.length; j++) {
@@ -39,7 +42,9 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
                     break;
                 }
             }
-            return weath;
+            const city:string = response.data.location.name+" ("+response.data.location.country
+            const point :PointDescription={coordinate: coordinate, weather: weath, city: city, date: time};
+            return point
         });
 }
 
