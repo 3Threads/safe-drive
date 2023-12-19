@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express';
 import {Coordinates} from "../../Interfaces/coordinates";
 import {getCoordinate, getWeatherByCoordinates} from "../../weather";
-import {getCity, getPoints, getRoute} from "../../map-api";
+import {getCity, getPoints} from "../../map-api";
 import {RoutePoint} from "../../Interfaces/route-point";
 import {WeatherInterface} from "../../Interfaces/weatherInterface";
 import {PointDescription} from "../../Interfaces/point-description";

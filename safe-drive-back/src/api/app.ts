@@ -1,9 +1,6 @@
-import express, {NextFunction, Request, Response} from 'express'
+import express from 'express'
 import cors from 'cors'
 import {weatherRouter} from "./routes";
-import {getCity} from "../map-api";
-import {getWeatherByCoordinates} from "../weather";
-import {Coordinates} from "../Interfaces/coordinates"
 
 const app = express()
 const port = 3636;
