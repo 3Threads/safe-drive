@@ -2,36 +2,6 @@ import axios, {AxiosResponse} from "axios";
 import {Coordinates} from "./Interfaces/coordinates";
 import {RoutePoint} from "./Interfaces/route-point";
 
-// function fetchRouteCoordinates(coordinates: string, frequency: number): Promise<Coordinates[]> {
-//     const options = {
-//         method: 'GET',
-//         url: 'https://trueway-directions2.p.rapidapi.com/FindDrivingRoute',
-//         params: {
-//             stops: coordinates
-//         },
-//         headers: {
-//             'X-RapidAPI-Key': 'e3fc70ca95msh0c1271a45bc037fp13f1eajsn7c9aa6fa0095',
-//             'X-RapidAPI-Host': 'trueway-directions2.p.rapidapi.com'
-//         }
-//     };
-//
-//     return axios.request(options)
-//         .then((response: AxiosResponse) => {
-//             const coordinates: string[][] = response.data.route.geometry.coordinates
-//             let routeCoordinates: Coordinates[] = []
-//             for (let i = 0; i < coordinates.length; i += frequency) {
-//                 const coordinate: Coordinates = {lat: coordinates[i][0], lng: coordinates[i][1]}
-//                 routeCoordinates.push(coordinate)
-//             }
-//             return routeCoordinates
-//         })
-//         .catch((error: any) => {
-//             console.error(error)
-//             return []
-//         })
-//
-// }
-
 function fetchPoints(coordinates: string): Promise<RoutePoint[]> {
     const options = {
         method: 'GET',
@@ -82,14 +52,6 @@ function fetchPoints(coordinates: string): Promise<RoutePoint[]> {
 }
 
 
-// export function getRoute(coordinates: Coordinates[], frequency: number = 100): Promise<Coordinates[]> {
-//     let coordinatesString: string = ''
-//     for (let i = 0; i < coordinates.length; i++) {
-//         coordinatesString += coordinates[i].lat + "," + coordinates[i].lng + ";";
-//     }
-//     return fetchRouteCoordinates(coordinatesString, frequency)
-// }
-
 export function getPoints(coordinates: Coordinates[]): Promise<RoutePoint[]> {
     let coordinatesString: string = ''
     for (let i = 0; i < coordinates.length; i++) {
@@ -98,12 +60,57 @@ export function getPoints(coordinates: Coordinates[]): Promise<RoutePoint[]> {
     return fetchPoints(coordinatesString)
 }
 
-export function getCity(lat: string, lon: string): Promise<string> {
+export function getCoordinate(city: string): Promise<Coordinates> {
     const option = {
         method: 'GET',
-        url: `https://api-bdc.net/data/reverse-geocode?latitude=${lat}&longitude=${lon}&localityLanguage=en&key=bdc_c044b1614636419e9cdfacd4be4a48f6`
+        url: `https://api.api-ninjas.com/v1/geocoding?city=${city}`,
+        headers: {
+            'X-Api-Key': '9h9nv0dwprO2gCijEsfnjg==LxoD02CHY72NgISw'
+        },
     };
-    return axios.request(option).then((response: AxiosResponse) => {
-        return response.data.city
-    })
+    return axios.request(option)
+        .then((response: AxiosResponse) => {
+            const coordinate: Coordinates = {lat: response.data[0].latitude, lng: response.data[0].longitude}
+            return coordinate;
+        })
 }
+
+
+// am funqciashi problema isaa rom gzadagza droebs ver vimaxsovrebt
+// function fetchRouteCoordinates(coordinates: string, frequency: number): Promise<Coordinates[]> {
+//     const options = {
+//         method: 'GET',
+//         url: 'https://trueway-directions2.p.rapidapi.com/FindDrivingRoute',
+//         params: {
+//             stops: coordinates
+//         },
+//         headers: {
+//             'X-RapidAPI-Key': 'e3fc70ca95msh0c1271a45bc037fp13f1eajsn7c9aa6fa0095',
+//             'X-RapidAPI-Host': 'trueway-directions2.p.rapidapi.com'
+//         }
+//     };
+//
+//     return axios.request(options)
+//         .then((response: AxiosResponse) => {
+//             const coordinates: string[][] = response.data.route.geometry.coordinates
+//             let routeCoordinates: Coordinates[] = []
+//             for (let i = 0; i < coordinates.length; i += frequency) {
+//                 const coordinate: Coordinates = {lat: coordinates[i][0], lng: coordinates[i][1]}
+//                 routeCoordinates.push(coordinate)
+//             }
+//             return routeCoordinates
+//         })
+//         .catch((error: any) => {
+//             console.error(error)
+//             return []
+//         })
+//
+// }
+
+// export function getRoute(coordinates: Coordinates[], frequency: number = 100): Promise<Coordinates[]> {
+//     let coordinatesString: string = ''
+//     for (let i = 0; i < coordinates.length; i++) {
+//         coordinatesString += coordinates[i].lat + "," + coordinates[i].lng + ";";
+//     }
+//     return fetchRouteCoordinates(coordinatesString, frequency)
+// }

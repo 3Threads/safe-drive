@@ -36,23 +36,12 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
             weather.condition_img = response.data.forecast.forecastday[0].hour[0].condition.icon;
 
             const city: string = response.data.location.name + " (" + response.data.location.country + ")"
-            const point: PointDescription = {coordinate: coordinate, weather: weather, city: city, date: time};
+            const point: PointDescription = {
+                coordinate: coordinate,
+                weather: weather,
+                city: city,
+                date: date + ' (' + time + ')'
+            };
             return point
         });
-}
-
-
-export function getCoordinate(city: string): Promise<Coordinates> {
-    const option = {
-        method: 'GET',
-        url: `https://api.api-ninjas.com/v1/geocoding?city=${city}`,
-        headers: {
-            'X-Api-Key': '9h9nv0dwprO2gCijEsfnjg==LxoD02CHY72NgISw'
-        },
-    };
-    return axios.request(option)
-        .then((response: AxiosResponse) => {
-            const coordinate: Coordinates = {lat: response.data[0].latitude, lng: response.data[0].longitude}
-            return coordinate;
-        })
 }
