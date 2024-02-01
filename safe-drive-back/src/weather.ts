@@ -11,9 +11,7 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
             "key": "851bbeea69c140d9abf165156231912",
             "q": `${coordinate.lat},${coordinate.lng}`,
             "dt": date,
-            "hour": time.split(':')[0],
-            "aqi": "no",
-            "alerts": "yes"
+            "hour": time.split(':')[0]
         }
     };
     return axios.request(option)
