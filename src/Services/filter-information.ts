@@ -1,5 +1,5 @@
 import {Coordinates} from "../Interfaces/coordinates";
-import {getCoordinate, getPoints} from "./map-api";
+import {getCoordinate, getRoadsPoints} from "./map-api";
 import {PointDescription} from "../Interfaces/point-description";
 import {RoutePoint} from "../Interfaces/route-point";
 import {getWeatherByCoordinates} from "./weather-api";
@@ -26,7 +26,7 @@ export function getPointsDescriptions(cities: string[] | undefined, date: Date =
 
     return getCoordinatesList(cities)
         .then((coordinates: Coordinates[]) => {
-            return getPoints(coordinates)
+            return getRoadsPoints(coordinates)
         })
         .then((routeCoordinates: RoutePoint[][]) => {
             let allPromises: Promise<PointDescription[]>[] = [];
