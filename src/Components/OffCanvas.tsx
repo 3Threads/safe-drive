@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import FormControl from './FormControl';
+import {PointDescription} from "../Interfaces/point-description";
 
 interface FormProps {
-    setData: any;
-    handleClose: () => void;
+    setData: (value: PointDescription[]) => void;
+    setIsLoading: (value: boolean) => void;
 }
 
 function OffCanvasComponent(props: FormProps) {
@@ -40,7 +41,7 @@ function OffCanvasComponent(props: FormProps) {
                         <Offcanvas.Title><div style={{color: 'white'}}>Plan departure safely</div></Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                        <FormControl setData={props.setData} handleClose={handleClose} />
+                        <FormControl setData={props.setData} handleClose={handleClose} setIsLoading={props.setIsLoading} />
                     </Offcanvas.Body>
                 </div>
             </Offcanvas>

@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
 import TextField from './InputField';
-import {PointDescription} from "../interfaces/point-description";
+import {PointDescription} from "../Interfaces/point-description";
 import DropDownButton from "./DropDownButton";
+import {getPointsDescriptions} from "../Services/filter-information";
 
-interface FormPros {
-    setData: any;
+interface FormProps {
+    setData: (value: PointDescription[]) => void;
     handleClose: () => void; // Add handleClose prop type
+    setIsLoading: (value: boolean) => void;
 }
 
-const FormControl = (pros: FormPros) => {
+const FormControl = (props: FormProps) => {
     const [destinationFields, setDestinationFields] = useState(['']); // Initial state with an empty destination field
     const [startField, setStartField] = useState(''); // Initial state with an empty destination field
     const [selectedDateTime, setSelectedDateTime] = useState(undefined);
@@ -37,27 +39,28 @@ const FormControl = (pros: FormPros) => {
     };
 
 
-    const fetchData = async () => {
-        try {
-            // Construct the URL with the values from the array
-            let queryString = `city=${startField}&` + destinationFields.map(city => `city=${city}`).join('&');
-            if (selectedDateTime !== undefined) {
-                queryString += `&hour=${selectedDateTime["$H"]}&minute=${selectedDateTime["$m"]}&day=${selectedDateTime["$D"]}&month=${selectedDateTime["$M"]}&year=${selectedDateTime["$y"]}`
-            }
-
-            const response = await fetch(`http://localhost:3636/?${queryString}`);
-            const result = (await response.json()).weathers as PointDescription[][];
-            pros.setData(result[0]); // mxolod erti gzisas vsetav. only one way
-        } catch (error) {
-            console.error('Error fetching data:', error);
+    function fetchData(): Promise<PointDescription[]> {
+        let date = new Date();
+        if (selectedDateTime !== undefined) {
+            date = new Date(selectedDateTime["$y"], selectedDateTime["$M"], selectedDateTime["$D"], selectedDateTime["$H"], selectedDateTime["$m"]);
         }
-    };
+        return getPointsDescriptions([startField, ...destinationFields], date)
+    }
 
 
     const handleSubmit = (e: any) => {
-        pros.handleClose();
+        props.setIsLoading(true);
+        props.handleClose();
         e.preventDefault();
-        fetchData();
+        fetchData()
+            .then((pointsDescriptions: PointDescription[]) => {
+                props.setData(pointsDescriptions);
+                props.setIsLoading(false);
+            })
+            .catch(() => {
+                props.setData([]);
+                props.setIsLoading(false);
+            });
     };
 
     return (

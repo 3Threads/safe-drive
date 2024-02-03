@@ -1,9 +1,6 @@
 import React from 'react';
-import sun from "../Images/sun.png";
 import CityData from "./CityData";
-import {PointDescription} from "../interfaces/point-description";
-// @ts-ignore
-import {WiDaySunny, WiDayShowers, WiDayRain, WiDaySnow} from 'weather-icons-react';
+import {PointDescription} from "../Interfaces/point-description";
 
 interface TableProps {
     cityData: PointDescription[];
@@ -54,8 +51,8 @@ const Table = (cityDatas: TableProps) => {
 
                     {cityDatas.cityData.map((item, index) => (
                         <CityData
-                            key={index+1}
-                            index={index+1}
+                            key={index + 1}
+                            index={index + 1}
                             time={item.date}
                             location={item.city}
                             degree={item.weather.temperature}
