@@ -17,11 +17,11 @@ function roundToHour(date: Date): Date {
     return new Date(Math.round(date.getTime() / p) * p);
 }
 
-export function getPointsDescriptions(cities: string[] | undefined, date: Date = new Date()): Promise<PointDescription[][]> | any {
+export function getPointsDescriptions(cities: string[] | undefined, date: Date = new Date()): Promise<PointDescription[]>{
     date.setHours(date.getHours() + 4)
 
     if (cities === undefined || cities.length < 2) {
-        return []
+        throw new Error("Not enough cities")
     }
 
     return getCoordinatesList(cities)

@@ -4,12 +4,13 @@ import {PointDescription} from "../Interfaces/point-description";
 import DropDownButton from "./DropDownButton";
 import {getPointsDescriptions} from "../Services/filter-information";
 
-interface FormPros {
-    setData: any;
+interface FormProps {
+    setData: (value: PointDescription[]) => void;
     handleClose: () => void; // Add handleClose prop type
+    setIsLoading: (value: boolean) => void;
 }
 
-const FormControl = (pros: FormPros) => {
+const FormControl = (props: FormProps) => {
     const [destinationFields, setDestinationFields] = useState(['']); // Initial state with an empty destination field
     const [startField, setStartField] = useState(''); // Initial state with an empty destination field
     const [selectedDateTime, setSelectedDateTime] = useState(undefined);
@@ -38,27 +39,28 @@ const FormControl = (pros: FormPros) => {
     };
 
 
-    const fetchData = async () => {
-        try {
-            let date = new Date();
-            if (selectedDateTime !== undefined) {
-                date = new Date(selectedDateTime["$y"], selectedDateTime["$M"], selectedDateTime["$D"], selectedDateTime["$H"], selectedDateTime["$m"]);
-            }
-            getPointsDescriptions([startField, ...destinationFields], date)
-                .then((pointsDescriptions: PointDescription[]) => {
-                    pros.setData(pointsDescriptions);
-                })
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
+    function fetchData(): Promise<PointDescription[]> {
+        let date = new Date();
+        if (selectedDateTime !== undefined) {
+            date = new Date(selectedDateTime["$y"], selectedDateTime["$M"], selectedDateTime["$D"], selectedDateTime["$H"], selectedDateTime["$m"]);
         }
-    };
+        return getPointsDescriptions([startField, ...destinationFields], date)
+    }
 
 
     const handleSubmit = (e: any) => {
-        pros.handleClose();
+        props.setIsLoading(true);
+        props.handleClose();
         e.preventDefault();
-        fetchData();
+        fetchData()
+            .then((pointsDescriptions: PointDescription[]) => {
+                props.setData(pointsDescriptions);
+                props.setIsLoading(false);
+            })
+            .catch(() => {
+                props.setData([]);
+                props.setIsLoading(false);
+            });
     };
 
     return (
