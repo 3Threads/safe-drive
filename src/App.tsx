@@ -4,7 +4,6 @@ import { PointDescription } from './Interfaces/point-description';
 import Table from './Components/Table';
 import OffCanvas from './Components/OffCanvas';
 import logo from './Images/logo.png';
-import LoadingIcons, {Oval} from 'react-loading-icons'
 
 const App: React.FC = () => {
   const [data, setData] = useState<PointDescription[]>([]);

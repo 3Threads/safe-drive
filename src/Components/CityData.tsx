@@ -1,4 +1,4 @@
-import React, {ReactComponentElement, useState} from 'react';
+import React from 'react';
 import {Coordinates} from "../Interfaces/coordinates";
 
 interface CityDataProps {

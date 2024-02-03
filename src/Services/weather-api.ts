@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from "axios";
-import {Coordinates} from "../../../safe-drive-back/src/Interfaces/coordinates";
-import {WeatherInterface} from "../../../safe-drive-back/src/Interfaces/weatherInterface";
-import {PointDescription} from "../../../safe-drive-back/src/Interfaces/point-description";
+import {Coordinates} from "../Interfaces/coordinates";
+import {WeatherInterface} from "../Interfaces/weatherInterface";
+import {PointDescription} from "../Interfaces/point-description";
 
 export function getWeatherByCoordinates(coordinate: Coordinates, date: string, time: string): Promise<PointDescription> {
     const option = {

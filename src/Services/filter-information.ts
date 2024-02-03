@@ -1,11 +1,8 @@
-import express, {Request, Response} from 'express';
-import {Coordinates} from "../../Interfaces/coordinates";
-import {getWeatherByCoordinates} from "safe-drive-front/src/Services/weather-api";
-import {getCoordinate, getPoints} from "safe-drive-front/src/Services/map-api";
-import {RoutePoint} from "../../Interfaces/route-point";
-import {PointDescription} from "../../Interfaces/point-description";
-
-export const weatherRouter = express.Router();
+import {Coordinates} from "../Interfaces/coordinates";
+import {getCoordinate, getPoints} from "./map-api";
+import {PointDescription} from "../Interfaces/point-description";
+import {RoutePoint} from "../Interfaces/route-point";
+import {getWeatherByCoordinates} from "./weather-api";
 
 function getCoordinatesList(cities: string[]): Promise<Coordinates[]> {
     let coordinatesList: Promise<Coordinates>[] = []
@@ -20,27 +17,14 @@ function roundToHour(date: Date): Date {
     return new Date(Math.round(date.getTime() / p) * p);
 }
 
-weatherRouter.get('/', function (req: Request, res: Response) {
-    const cities: string[] = req.query.city as string[]
-    let date = new Date()
-    const hour = req.query.hour as string
-    if (hour !== undefined) {
-        const minute = req.query.minute as string
-        const year = req.query.year as string
-        const month = req.query.month as string
-
-        const day = req.query.day as string
-        date = new Date(parseInt(year), parseInt(month), parseInt(day), parseInt(hour), parseInt(minute))
-
-    }
+export function getPointsDescriptions(cities: string[] | undefined, date: Date = new Date()): Promise<PointDescription[][]> | any {
     date.setHours(date.getHours() + 4)
 
-    if (cities == undefined || cities.length < 2) {
-        res.send({error: "Not enough coordinates"})
-        return
+    if (cities === undefined || cities.length < 2) {
+        return []
     }
 
-    getCoordinatesList(cities)
+    return getCoordinatesList(cities)
         .then((coordinates: Coordinates[]) => {
             return getPoints(coordinates)
         })
@@ -61,10 +45,4 @@ weatherRouter.get('/', function (req: Request, res: Response) {
 
             return Promise.all(allPromises);
         })
-        .then((weather: PointDescription[][]) => {
-
-            res.send({
-                weathers: weather
-            })
-        })
-})
+}
