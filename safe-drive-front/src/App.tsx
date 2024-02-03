@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { PointDescription } from './interfaces/point-description';
+import { PointDescription } from './Interfaces/point-description';
 import Table from './Components/Table';
 import OffCanvas from './Components/OffCanvas';
 import logo from './Images/logo.png';

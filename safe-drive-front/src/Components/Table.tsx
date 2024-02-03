@@ -1,7 +1,7 @@
 import React from 'react';
 import sun from "../Images/sun.png";
 import CityData from "./CityData";
-import {PointDescription} from "../interfaces/point-description";
+import {PointDescription} from "../Interfaces/point-description";
 // @ts-ignore
 import {WiDaySunny, WiDayShowers, WiDayRain, WiDaySnow} from 'weather-icons-react';
 

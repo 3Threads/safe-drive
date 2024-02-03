@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import TextField from './InputField';
-import {PointDescription} from "../interfaces/point-description";
+import {PointDescription} from "../Interfaces/point-description";
 import DropDownButton from "./DropDownButton";
+import {getPointsDescriptions} from "../Services/filter-information";
 
 interface FormPros {
     setData: any;
@@ -39,15 +40,17 @@ const FormControl = (pros: FormPros) => {
 
     const fetchData = async () => {
         try {
-            // Construct the URL with the values from the array
-            let queryString = `city=${startField}&` + destinationFields.map(city => `city=${city}`).join('&');
+            let date = new Date();
             if (selectedDateTime !== undefined) {
-                queryString += `&hour=${selectedDateTime["$H"]}&minute=${selectedDateTime["$m"]}&day=${selectedDateTime["$D"]}&month=${selectedDateTime["$M"]}&year=${selectedDateTime["$y"]}`
+                date = new Date(selectedDateTime["$y"], selectedDateTime["$M"], selectedDateTime["$D"], selectedDateTime["$H"], selectedDateTime["$m"]);
             }
+            getPointsDescriptions([startField, ...destinationFields], date)
+                .then((pointsDescriptions: PointDescription[][]) => {
+                    pros.setData(pointsDescriptions[0]); // mxolod erti gzisas vsetav. only one way
+                })
 
-            const response = await fetch(`http://localhost:3636/?${queryString}`);
-            const result = (await response.json()).weathers as PointDescription[][];
-            pros.setData(result[0]); // mxolod erti gzisas vsetav. only one way
+            // const result = (await response.json()).weathers as PointDescription[][];
+            // pros.setData(result[0]);
         } catch (error) {
             console.error('Error fetching data:', error);
         }

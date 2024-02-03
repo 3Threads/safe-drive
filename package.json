@@ -6,7 +6,7 @@
   "scripts": {
     "build": "cd safe-drive-back && yarn build",
     "build-back": "cd safe-drive-back && yarn build",
-    "build-front": "cd safe-drive-front && yarn build",
+    "build-front": "cd safe-drive-front && yarn build-back",
     "start-back": "cd safe-drive-back && yarn build && yarn start",
     "start-back-no-build": "cd safe-drive-back && yarn start",
     "start-front": "cd safe-drive-front && yarn start"

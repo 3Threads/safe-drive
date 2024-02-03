@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from "axios";
-import {Coordinates} from "./Interfaces/coordinates";
-import {RoutePoint} from "./Interfaces/route-point";
+import {Coordinates} from "../../../safe-drive-back/src/Interfaces/coordinates";
+import {RoutePoint} from "../../../safe-drive-back/src/Interfaces/route-point";
 
 function fetchPoints(coordinates: string): Promise<RoutePoint[][]> {
     const options = {
