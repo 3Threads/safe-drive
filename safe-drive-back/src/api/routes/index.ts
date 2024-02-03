@@ -44,16 +44,24 @@ weatherRouter.get('/', function (req: Request, res: Response) {
         .then((coordinates: Coordinates[]) => {
             return getPoints(coordinates)
         })
-        .then((routeCoordinates: RoutePoint[]) => {
-            let promises: Promise<PointDescription>[] = []
+        .then((routeCoordinates: RoutePoint[][]) => {
+            let allPromises: Promise<PointDescription[]>[] = [];
+
             for (let i = 0; i < routeCoordinates.length; i++) {
-                const currDate = roundToHour(new Date(date.getTime() + routeCoordinates[i].duration * 1000))
-                let dateArr: string[] = currDate.toISOString().split("T")
-                promises.push(getWeatherByCoordinates(routeCoordinates[i].coordinate, dateArr[0], dateArr[1].substring(0, 5)))
+                let promises: Promise<PointDescription>[] = [];
+
+                for (let j = 0; j < routeCoordinates[i].length; j++) {
+                    const currDate = roundToHour(new Date(date.getTime() + routeCoordinates[i][j].duration * 1000));
+                    let dateArr: string[] = currDate.toISOString().split("T");
+                    promises.push(getWeatherByCoordinates(routeCoordinates[i][j].coordinate, dateArr[0], dateArr[1].substring(0, 5)));
+                }
+
+                allPromises.push(Promise.all(promises));
             }
-            return Promise.all(promises)
+
+            return Promise.all(allPromises);
         })
-        .then((weather: PointDescription[]) => {
+        .then((weather: PointDescription[][]) => {
 
             res.send({
                 weathers: weather

@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from "axios";
 import {Coordinates} from "./Interfaces/coordinates";
 import {RoutePoint} from "./Interfaces/route-point";
 
-function fetchPoints(coordinates: string): Promise<RoutePoint[]> {
+function fetchPoints(coordinates: string): Promise<RoutePoint[][]> {
     const options = {
         method: 'GET',
         url: 'https://trueway-directions2.p.rapidapi.com/FindDrivingRoute',
@@ -17,32 +17,42 @@ function fetchPoints(coordinates: string): Promise<RoutePoint[]> {
 
     return axios.request(options)
         .then((response: AxiosResponse) => {
-            const points: any[] = response.data.route.legs[0].steps
-            let distance = 0
-            let time = 0
+            const ways: RoutePoint[][] = []
+            console.log(response.data.route.legs.length)
+            for (let i = 0; i < response.data.route.legs.length; i++) {
+                const points: any[] = response.data.route.legs[i].steps
+                let distance = 0
 
-            let routeCoordinates: RoutePoint[] = []
-            routeCoordinates.push({
-                duration: 0,
-                coordinate: {lat: points[0].start_point.lat, lng: points[0].start_point.lng}
-            })
-            for (let i = 0; i < points.length - 1; i++) {
-                time += points[i].duration
-                distance += points[i].distance
-                if (distance >= 10000) {
-                    distance = 0
-                    const point: RoutePoint = {
-                        duration: time,
-                        coordinate: {lat: points[i].end_point.lat, lng: points[i].end_point.lng}
+                let time = 0
+
+                const routeCoordinates: RoutePoint[] = []
+                routeCoordinates.push({
+                    duration: 0,
+                    coordinate: {lat: points[0].start_point.lat, lng: points[0].start_point.lng}
+                })
+                for (let i = 0; i < points.length - 1; i++) {
+                    time += points[i].duration
+                    distance += points[i].distance
+                    if (distance >= 10000) {
+                        distance = 0
+                        const point: RoutePoint = {
+                            duration: time,
+                            coordinate: {lat: points[i].end_point.lat, lng: points[i].end_point.lng}
+                        }
+                        routeCoordinates.push(point)
                     }
-                    routeCoordinates.push(point)
                 }
+                routeCoordinates.push({
+                    duration: time + points[points.length - 1].duration,
+                    coordinate: {
+                        lat: points[points.length - 1].end_point.lat,
+                        lng: points[points.length - 1].end_point.lng
+                    }
+                })
+                ways.push(routeCoordinates)
             }
-            routeCoordinates.push({
-                duration: time + points[points.length - 1].duration,
-                coordinate: {lat: points[points.length - 1].end_point.lat, lng: points[points.length - 1].end_point.lng}
-            })
-            return routeCoordinates
+            return ways
+
         })
         .catch((error: any) => {
             console.error(error)
@@ -52,7 +62,7 @@ function fetchPoints(coordinates: string): Promise<RoutePoint[]> {
 }
 
 
-export function getPoints(coordinates: Coordinates[]): Promise<RoutePoint[]> {
+export function getPoints(coordinates: Coordinates[]): Promise<RoutePoint[][]> {
     let coordinatesString: string = ''
     for (let i = 0; i < coordinates.length; i++) {
         coordinatesString += coordinates[i].lat + "," + coordinates[i].lng + ";";

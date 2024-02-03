@@ -46,8 +46,8 @@ const FormControl = (pros: FormPros) => {
             }
 
             const response = await fetch(`http://localhost:3636/?${queryString}`);
-            const result = (await response.json()).weathers as PointDescription[];
-            pros.setData(result);
+            const result = (await response.json()).weathers as PointDescription[][];
+            pros.setData(result[0]); // mxolod erti gzisas vsetav. only one way
         } catch (error) {
             console.error('Error fetching data:', error);
         }
