@@ -45,12 +45,10 @@ const FormControl = (pros: FormPros) => {
                 date = new Date(selectedDateTime["$y"], selectedDateTime["$M"], selectedDateTime["$D"], selectedDateTime["$H"], selectedDateTime["$m"]);
             }
             getPointsDescriptions([startField, ...destinationFields], date)
-                .then((pointsDescriptions: PointDescription[][]) => {
-                    pros.setData(pointsDescriptions[0]); // mxolod erti gzisas vsetav. only one way
+                .then((pointsDescriptions: PointDescription[]) => {
+                    pros.setData(pointsDescriptions);
                 })
 
-            // const result = (await response.json()).weathers as PointDescription[][];
-            // pros.setData(result[0]);
         } catch (error) {
             console.error('Error fetching data:', error);
         }

@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from "axios";
 import {RoutePoint} from "../Interfaces/route-point";
 import {Coordinates} from "../Interfaces/coordinates";
 
-function fetchRoadsPointsFromAPI(coordinates: string): Promise<RoutePoint[][]> {
+function fetchRoadsPointsFromAPI(coordinates: string): Promise<RoutePoint[]> {
     const options = {
         method: 'GET',
         url: 'https://trueway-directions2.p.rapidapi.com/FindDrivingRoute',
@@ -17,15 +17,14 @@ function fetchRoadsPointsFromAPI(coordinates: string): Promise<RoutePoint[][]> {
 
     return axios.request(options)
         .then((response: AxiosResponse) => {
-            const ways: RoutePoint[][] = []
-            console.log(response.data.route.legs.length)
+            const routeCoordinates: RoutePoint[] = []
+            // console.log(response.data.route.legs.length)
             for (let i = 0; i < response.data.route.legs.length; i++) {
                 const points: any[] = response.data.route.legs[i].steps
                 let distance = 0
 
                 let time = 0
 
-                const routeCoordinates: RoutePoint[] = []
                 routeCoordinates.push({
                     duration: 0,
                     coordinate: {lat: points[0].start_point.lat, lng: points[0].start_point.lng}
@@ -49,9 +48,8 @@ function fetchRoadsPointsFromAPI(coordinates: string): Promise<RoutePoint[][]> {
                         lng: points[points.length - 1].end_point.lng
                     }
                 })
-                ways.push(routeCoordinates)
             }
-            return ways
+            return routeCoordinates
 
         })
         .catch((error: any) => {
@@ -62,7 +60,7 @@ function fetchRoadsPointsFromAPI(coordinates: string): Promise<RoutePoint[][]> {
 }
 
 
-export function getRoadsPoints(coordinates: Coordinates[]): Promise<RoutePoint[][]> {
+export function getRoadsPoints(coordinates: Coordinates[]): Promise<RoutePoint[]> {
     let coordinatesString: string = ''
     for (let i = 0; i < coordinates.length; i++) {
         coordinatesString += coordinates[i].lat + "," + coordinates[i].lng + ";";
