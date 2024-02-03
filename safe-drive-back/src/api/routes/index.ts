@@ -22,6 +22,18 @@ function roundToHour(date: Date): Date {
 
 weatherRouter.get('/', function (req: Request, res: Response) {
     const cities: string[] = req.query.city as string[]
+    let date = new Date()
+    const hour = req.query.hour as string
+    if (hour !== undefined) {
+        const minute = req.query.minute as string
+        const year = req.query.year as string
+        const month = req.query.month as string
+
+        const day = req.query.day as string
+        date = new Date(parseInt(year), parseInt(month), parseInt(day), parseInt(hour), parseInt(minute))
+
+    }
+    date.setHours(date.getHours() + 4)
 
     if (cities == undefined || cities.length < 2) {
         res.send({error: "Not enough coordinates"})
@@ -33,8 +45,6 @@ weatherRouter.get('/', function (req: Request, res: Response) {
             return getPoints(coordinates)
         })
         .then((routeCoordinates: RoutePoint[]) => {
-            const date = new Date(new Date().getTime() + 4 * 60 * 60 * 1000);
-
             let promises: Promise<PointDescription>[] = []
             for (let i = 0; i < routeCoordinates.length; i++) {
                 const currDate = roundToHour(new Date(date.getTime() + routeCoordinates[i].duration * 1000))

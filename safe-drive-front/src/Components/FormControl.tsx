@@ -4,13 +4,14 @@ import {PointDescription} from "../interfaces/point-description";
 import DropDownButton from "./DropDownButton";
 
 interface FormPros {
-  setData: any;
-  handleClose: () => void; // Add handleClose prop type
+    setData: any;
+    handleClose: () => void; // Add handleClose prop type
 }
 
 const FormControl = (pros: FormPros) => {
     const [destinationFields, setDestinationFields] = useState(['']); // Initial state with an empty destination field
     const [startField, setStartField] = useState(''); // Initial state with an empty destination field
+    const [selectedDateTime, setSelectedDateTime] = useState(undefined);
 
     const addNewTextField = () => {
         setDestinationFields(prevFields => [...prevFields, '']);
@@ -30,7 +31,7 @@ const FormControl = (pros: FormPros) => {
     };
 
     const handleStartChange = (value: string) => {
-        setStartField(prevFields => {
+        setStartField(() => {
             return value;
         });
     };
@@ -39,7 +40,11 @@ const FormControl = (pros: FormPros) => {
     const fetchData = async () => {
         try {
             // Construct the URL with the values from the array
-            const queryString = `city=${startField}&` + destinationFields.map(city => `city=${city}`).join('&');
+            let queryString = `city=${startField}&` + destinationFields.map(city => `city=${city}`).join('&');
+            if (selectedDateTime !== undefined) {
+                queryString += `&hour=${selectedDateTime["$H"]}&minute=${selectedDateTime["$m"]}&day=${selectedDateTime["$D"]}&month=${selectedDateTime["$M"]}&year=${selectedDateTime["$y"]}`
+            }
+
             const response = await fetch(`http://localhost:3636/?${queryString}`);
             const result = (await response.json()).weathers as PointDescription[];
             pros.setData(result);
@@ -65,7 +70,8 @@ const FormControl = (pros: FormPros) => {
                            onChange={(e: any) => handleStartChange(e.target.value)}
                 />
             </div>
-            <DropDownButton/>
+            <DropDownButton selectedDateTime={selectedDateTime}
+                            setSelectedDateTime={setSelectedDateTime}></DropDownButton>
             <div className="mb-4 col-12">
                 <label htmlFor="destination" className="form-label" style={{color: 'white'}}>
                     Destination

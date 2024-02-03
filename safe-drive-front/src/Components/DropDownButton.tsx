@@ -2,7 +2,12 @@ import React, {useState} from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import BasicDateTimePicker from "./BasicDateTimePicker";
 
-function DropDownButton() {
+interface DateTimePickerPros {
+    selectedDateTime: any;
+    setSelectedDateTime: (time: any) => void;
+}
+
+function DropDownButton(pros: DateTimePickerPros) {
     const [selectedItem, setSelectedItem] = useState<string>('now');
 
     const handleSelect = (eventKey: string | null) => {
@@ -29,7 +34,10 @@ function DropDownButton() {
             </Dropdown>
 
             {selectedItem === 'now' && <div className={"col-12 mb-2"}></div>}
-            {selectedItem === 'notNow' && <div className={"col-12 mb-2"}><BasicDateTimePicker/></div>}
+            {selectedItem === 'notNow' &&
+                <div className={"col-12 mb-2"}><BasicDateTimePicker selectedDateTime={pros.selectedDateTime}
+                                                                    setSelectedDateTime={pros.setSelectedDateTime}/>
+                </div>}
         </div>
     );
 }
