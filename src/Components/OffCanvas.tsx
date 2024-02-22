@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import FormControl from './FormControl';
-import {PointDescription} from "../Interfaces/point-description";
+import {Coordinates} from "../Interfaces/coordinates";
 
 interface FormProps {
-    setData: (value: PointDescription[]) => void;
     setIsLoading: (value: boolean) => void;
+    setCoordinates: React.Dispatch<React.SetStateAction<Coordinates[]>>;
+    setReleaseDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 function OffCanvasComponent(props: FormProps) {
@@ -38,10 +39,13 @@ function OffCanvasComponent(props: FormProps) {
             <Offcanvas style={{height: '100%'}} show={show} onHide={handleClose} scroll={scroll} backdrop={backdrop}>
                 <div className="bg-dark" style={{height: '100%'}}>
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title><div style={{color: 'white'}}>Plan departure safely</div></Offcanvas.Title>
+                        <Offcanvas.Title>
+                            <div style={{color: 'white'}}>Plan departure safely</div>
+                        </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                        <FormControl setData={props.setData} handleClose={handleClose} setIsLoading={props.setIsLoading} />
+                        <FormControl setReleaseDate={props.setReleaseDate} setCoordinates={props.setCoordinates}
+                                     handleClose={handleClose} setIsLoading={props.setIsLoading}/>
                     </Offcanvas.Body>
                 </div>
             </Offcanvas>

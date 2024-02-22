@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import TextField from './InputField';
-import {PointDescription} from "../Interfaces/point-description";
 import DropDownButton from "./DropDownButton";
-import {getPointsDescriptions} from "../Services/filter-information";
+import {getCoordinatesList} from "../Services/filter-information";
+import {Coordinates} from "../Interfaces/coordinates";
 
 interface FormProps {
-    setData: (value: PointDescription[]) => void;
+    setCoordinates: React.Dispatch<React.SetStateAction<Coordinates[]>>;
+    setReleaseDate: React.Dispatch<React.SetStateAction<Date>>;
     handleClose: () => void; // Add handleClose prop type
     setIsLoading: (value: boolean) => void;
 }
@@ -39,12 +40,21 @@ const FormControl = (props: FormProps) => {
     };
 
 
-    function fetchData(): Promise<PointDescription[]> {
+    function updateCoordinates() {
         let date = new Date();
         if (selectedDateTime !== undefined) {
             date = new Date(selectedDateTime["$y"], selectedDateTime["$M"], selectedDateTime["$D"], selectedDateTime["$H"], selectedDateTime["$m"]);
         }
-        return getPointsDescriptions([startField, ...destinationFields], date)
+        const cities = [startField, ...destinationFields];
+        if (cities.length < 2) {
+            throw new Error("Not enough cities")
+        }
+
+        getCoordinatesList(cities)
+            .then((coordinates: Coordinates[]) => {
+                props.setCoordinates(coordinates);
+                props.setReleaseDate(date);
+            })
     }
 
 
@@ -52,15 +62,7 @@ const FormControl = (props: FormProps) => {
         props.setIsLoading(true);
         props.handleClose();
         e.preventDefault();
-        fetchData()
-            .then((pointsDescriptions: PointDescription[]) => {
-                props.setData(pointsDescriptions);
-                props.setIsLoading(false);
-            })
-            .catch(() => {
-                props.setData([]);
-                props.setIsLoading(false);
-            });
+        updateCoordinates();
     };
 
 

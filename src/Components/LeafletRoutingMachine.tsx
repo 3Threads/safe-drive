@@ -4,17 +4,19 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import {useMap} from "react-leaflet";
 import {PointDescription} from "../Interfaces/point-description";
 import {RoutePoint} from "../Interfaces/route-point";
+import {Coordinates} from "../Interfaces/coordinates";
+import {getWeatherByCoordinates} from "../Services/weather-api";
 
 interface Props {
-    data: PointDescription[];
+    coordinates: Coordinates[];
+    releaseDate: Date;
 }
 
-const LeafletRoutingMachine = ({data}: Props) => {
+const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
     const map = useMap();
 
     const control = L.Routing.control({
-        // waypoints: data.map((d) => L.latLng(parseFloat(d.coordinate.lat), parseFloat(d.coordinate.lng))),
-        waypoints: [L.latLng(41.6938, 44.8015), L.latLng(55.7558, 37.6173)],
+        waypoints: coordinates.map((coordinate) => L.latLng(parseFloat(coordinate.lat), parseFloat(coordinate.lng))),
         routeWhileDragging: false,
         addWaypoints: true,
         fitSelectedRoutes: true,
@@ -25,7 +27,7 @@ const LeafletRoutingMachine = ({data}: Props) => {
     control.on('routesfound', function (e) {
         const routes = e.routes;
         const routeCoordinates: RoutePoint[] = []
-        routes.forEach((route: any, index: number) => {
+        routes.forEach((route: any) => {
             const instructions = route.instructions;
             const polyline = route.coordinates;
             let totalDistanceCovered = 0; // Track the total distance covered by instructions
@@ -59,8 +61,28 @@ const LeafletRoutingMachine = ({data}: Props) => {
                 })
             });
         });
-        console.log(routeCoordinates)
+        getWeatherInfo(routeCoordinates, releaseDate)
+            .then((weatherInfo: PointDescription[]) => {
+                console.log(weatherInfo)
+            })
     });
+
+    function getWeatherInfo(routeCoordinates: RoutePoint[], date: Date) {
+        let promises: Promise<PointDescription>[] = [];
+
+        for (let i = 0; i < routeCoordinates.length; i++) {
+            const currDate = roundToHour(new Date(date.getTime() + routeCoordinates[i].duration * 1000 + 4 * 60 * 60 * 1000));
+            let dateArr: string[] = currDate.toISOString().split("T");
+            promises.push(getWeatherByCoordinates(routeCoordinates[i].coordinate, dateArr[0], dateArr[1].substring(0, 5)));
+        }
+
+        return Promise.all(promises);
+    }
+
+    function roundToHour(date: Date): Date {
+        let p: number = 60 * 60 * 1000; // milliseconds in an hour
+        return new Date(Math.round(date.getTime() / p) * p);
+    }
 
     return null;
 }

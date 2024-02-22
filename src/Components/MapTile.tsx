@@ -1,14 +1,15 @@
 import React from 'react';
 import {MapContainer, TileLayer} from "react-leaflet";
 import LeafletRoutingMachine from "./LeafletRoutingMachine";
-import {PointDescription} from "../Interfaces/point-description";
 import L from "leaflet";
+import {Coordinates} from "../Interfaces/coordinates";
 
 interface Props {
-    data: PointDescription[];
+    coordinates: Coordinates[];
+    releaseDate: Date;
 }
 
-const MapTile = ({data}: Props) => {
+const MapTile = ({coordinates, releaseDate}: Props) => {
     L.Marker.prototype.options.icon = L.icon({
         iconUrl: require("../Images/location.png"),
         iconSize: [20, 20],
@@ -22,7 +23,7 @@ const MapTile = ({data}: Props) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {/*  <LeafletGeocoder /> */}
-                <LeafletRoutingMachine data={data}/>
+                <LeafletRoutingMachine coordinates={coordinates} releaseDate={releaseDate}/>
             </MapContainer>
         </div>
     );
