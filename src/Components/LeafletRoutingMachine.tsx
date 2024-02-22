@@ -6,6 +6,7 @@ import {PointDescription} from "../Interfaces/point-description";
 import {RoutePoint} from "../Interfaces/route-point";
 import {Coordinates} from "../Interfaces/coordinates";
 import {getWeatherByCoordinates} from "../Services/weather-api";
+import {useEffect, useState} from "react";
 
 interface Props {
     coordinates: Coordinates[];
@@ -14,58 +15,67 @@ interface Props {
 
 const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
     const map = useMap();
+    const [markers, setMarkers] = useState<L.Marker[]>([])
 
-    const control = L.Routing.control({
-        waypoints: coordinates.map((coordinate) => L.latLng(parseFloat(coordinate.lat), parseFloat(coordinate.lng))),
-        routeWhileDragging: false,
-        addWaypoints: true,
-        fitSelectedRoutes: true,
-        showAlternatives: true,
-    }).addTo(map);
+    useEffect(() => {
+        const control = L.Routing.control({
+            waypoints: coordinates.map((coordinate) => L.latLng(parseFloat(coordinate.lat), parseFloat(coordinate.lng))),
+            routeWhileDragging: false,
+            addWaypoints: true,
+            fitSelectedRoutes: true,
+            showAlternatives: true,
+        }).addTo(map);
 
 
-    control.on('routesfound', function (e) {
-        const routes = e.routes;
-        const routeCoordinates: RoutePoint[] = []
-        routes.forEach((route: any) => {
-            const instructions = route.instructions;
-            const polyline = route.coordinates;
-            let totalDistanceCovered = 0; // Track the total distance covered by instructions
-            let totalTime = 0;
-            instructions.forEach((instruction: any) => {
-                const distance = instruction.distance;
+        control.on('routesfound', async function (e) {
+            const routes = e.routes;
+            const routeCoordinates: RoutePoint[] = []
+            routes.forEach((route: any) => {
+                const instructions = route.instructions;
+                const polyline = route.coordinates;
+                let totalDistanceCovered = 0; // Track the total distance covered by instructions
+                let totalTime = 0;
+                instructions.forEach((instruction: any) => {
+                    const distance = instruction.distance;
 
-                let distanceCovered = 0;
-                let coordinates;
-                for (let i = 0; i < polyline.length; i++) {
-                    if (i === polyline.length - 1) {
-                        coordinates = polyline[i];
-                        break;
+                    let distanceCovered = 0;
+                    let coordinates;
+                    for (let i = 0; i < polyline.length; i++) {
+                        if (i === polyline.length - 1) {
+                            coordinates = polyline[i];
+                            break;
+                        }
+                        distanceCovered += L.latLng(polyline[i]).distanceTo(L.latLng(polyline[i + 1]));
+                        if (distanceCovered >= totalDistanceCovered) {
+                            coordinates = polyline[i];
+                            break;
+                        }
                     }
-                    distanceCovered += L.latLng(polyline[i]).distanceTo(L.latLng(polyline[i + 1]));
-                    if (distanceCovered >= totalDistanceCovered) {
-                        coordinates = polyline[i];
-                        break;
-                    }
-                }
 
-                totalTime += instruction.time;
-                totalDistanceCovered += distance;
+                    totalTime += instruction.time;
+                    totalDistanceCovered += distance;
 
-                routeCoordinates.push({
-                    duration: totalTime,
-                    coordinate: {
-                        lat: coordinates.lat,
-                        lng: coordinates.lng
-                    }
-                })
+                    routeCoordinates.push({
+                        duration: totalTime,
+                        coordinate: {
+                            lat: coordinates.lat,
+                            lng: coordinates.lng
+                        }
+                    })
+                });
             });
+
+            getWeatherInfo(routeCoordinates, releaseDate)
+                .then((weatherInfo: PointDescription[]) => {
+
+                    const innerMarkers = weatherInfo.map((point: PointDescription) => {
+                        return L.marker([parseFloat(point.coordinate.lat), parseFloat(point.coordinate.lng)]).addTo(map).bindPopup(`${point.city} - ${point.weather.temperature}°C`);
+                    });
+                    setMarkers(innerMarkers);
+                    console.log(weatherInfo)
+                })
         });
-        getWeatherInfo(routeCoordinates, releaseDate)
-            .then((weatherInfo: PointDescription[]) => {
-                console.log(weatherInfo)
-            })
-    });
+    }, [coordinates, releaseDate]);
 
     function getWeatherInfo(routeCoordinates: RoutePoint[], date: Date) {
         let promises: Promise<PointDescription>[] = [];
