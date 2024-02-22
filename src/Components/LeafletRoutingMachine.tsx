@@ -6,7 +6,7 @@ import {PointDescription} from "../Interfaces/point-description";
 import {RoutePoint} from "../Interfaces/route-point";
 import {Coordinates} from "../Interfaces/coordinates";
 import {getWeatherByCoordinates} from "../Services/weather-api";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 interface Props {
     coordinates: Coordinates[];
@@ -15,7 +15,6 @@ interface Props {
 
 const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
     const map = useMap();
-    const [markers, setMarkers] = useState<L.Marker[]>([])
 
     useEffect(() => {
         const control = L.Routing.control({
@@ -24,10 +23,24 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
             addWaypoints: true,
             fitSelectedRoutes: true,
             showAlternatives: true,
+            show: false,
         }).addTo(map);
+        const routingContainer = document.querySelector('.leaflet-routing-container');
 
+        // Check if the container exists before attempting to remove it
+        if (routingContainer) {
+            // Remove the container from the DOM
+            routingContainer.remove();
+        }
 
         control.on('routesfound', async function (e) {
+            // Clear previous route overlays
+            map.eachLayer(function (layer) {
+                if (!(layer instanceof L.TileLayer)) {
+                    map.removeLayer(layer);
+                }
+            });
+
             const routes = e.routes;
             const routeCoordinates: RoutePoint[] = []
             routes.forEach((route: any) => {
@@ -67,11 +80,9 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
 
             getWeatherInfo(routeCoordinates, releaseDate)
                 .then((weatherInfo: PointDescription[]) => {
-
-                    const innerMarkers = weatherInfo.map((point: PointDescription) => {
+                    weatherInfo.map((point: PointDescription) => {
                         return L.marker([parseFloat(point.coordinate.lat), parseFloat(point.coordinate.lng)]).addTo(map).bindPopup(`${point.city} - ${point.weather.temperature}°C`);
                     });
-                    setMarkers(innerMarkers);
                     console.log(weatherInfo)
                 })
         });
