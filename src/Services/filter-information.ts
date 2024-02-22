@@ -4,7 +4,7 @@ import {PointDescription} from "../Interfaces/point-description";
 import {RoutePoint} from "../Interfaces/route-point";
 import {getWeatherByCoordinates} from "./weather-api";
 
-function getCoordinatesList(cities: string[]): Promise<Coordinates[]> {
+export function getCoordinatesList(cities: string[]): Promise<Coordinates[]> {
     let coordinatesList: Promise<Coordinates>[] = []
     for (let i = 0; i < cities.length; i++) {
         coordinatesList.push(getCoordinate(cities[i]))
