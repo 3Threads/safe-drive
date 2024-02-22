@@ -22,9 +22,9 @@ const App: React.FC = () => {
                                    setIsLoading={setIsLoading}/>
                     </div>
                     <MapTile coordinates={coordinates} releaseDate={releaseDate}/>
-                    {!isLoading ? <MapTile coordinates={coordinates} releaseDate={releaseDate}/> :
-                        <CircularProgress/>
-                    }
+                    {/*{!isLoading ? <MapTile coordinates={coordinates} releaseDate={releaseDate}/> :*/}
+                    {/*    <CircularProgress/>*/}
+                    {/*}*/}
                 </div>
             </div>
         </div>
