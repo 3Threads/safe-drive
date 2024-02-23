@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import TextField from './InputField';
 import DropDownButton from "./DropDownButton";
-import {getCoordinatesList} from "../../Services/filter-information";
 import {Coordinates} from "../../Interfaces/coordinates";
+import {getCoordinatesList} from "../../Services/map-api";
 
 interface FormProps {
     setCoordinates: React.Dispatch<React.SetStateAction<Coordinates[]>>;
