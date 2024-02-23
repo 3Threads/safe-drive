@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import OffCanvas from './Components/OffCanvas';
+import OffCanvas from './Components/SearchComponents/OffCanvas';
 import logo from './Images/logo.png';
-import {CircularProgress} from "@mui/material";
-import MapTile from "./Components/MapTile";
+import MapTile from "./Components/MapComponents/MapTile";
 import {Coordinates} from "./Interfaces/coordinates";
 
 const App: React.FC = () => {

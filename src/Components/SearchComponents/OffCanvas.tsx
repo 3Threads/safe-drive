@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import FormControl from './FormControl';
-import {Coordinates} from "../Interfaces/coordinates";
+import {Coordinates} from "../../Interfaces/coordinates";
 
 interface FormProps {
     setIsLoading: (value: boolean) => void;

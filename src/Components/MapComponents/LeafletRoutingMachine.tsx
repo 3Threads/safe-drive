@@ -2,10 +2,10 @@ import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import {useMap} from "react-leaflet";
-import {PointDescription} from "../Interfaces/point-description";
-import {RoutePoint} from "../Interfaces/route-point";
-import {Coordinates} from "../Interfaces/coordinates";
-import {getWeatherByCoordinates} from "../Services/weather-api";
+import {PointDescription} from "../../Interfaces/point-description";
+import {RoutePoint} from "../../Interfaces/route-point";
+import {Coordinates} from "../../Interfaces/coordinates";
+import {getWeatherByCoordinates} from "../../Services/weather-api";
 import {useEffect} from "react";
 
 interface Props {
