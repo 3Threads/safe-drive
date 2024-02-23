@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import TextField from './InputField';
 import DropDownButton from "./DropDownButton";
 import {Coordinates} from "../../Interfaces/coordinates";
-import {getCoordinatesList} from "../../Services/map-api";
+import {getCoordinatesList} from "../../Services/geocoding-api";
 
 interface FormProps {
     setCoordinates: React.Dispatch<React.SetStateAction<Coordinates[]>>;
