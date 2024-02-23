@@ -5,7 +5,6 @@ import FormControl from './FormControl';
 import {Coordinates} from "../../Interfaces/coordinates";
 
 interface FormProps {
-    setIsLoading: (value: boolean) => void;
     setCoordinates: React.Dispatch<React.SetStateAction<Coordinates[]>>;
     setReleaseDate: React.Dispatch<React.SetStateAction<Date>>;
 }
@@ -45,7 +44,7 @@ function OffCanvasComponent(props: FormProps) {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <FormControl setReleaseDate={props.setReleaseDate} setCoordinates={props.setCoordinates}
-                                     handleClose={handleClose} setIsLoading={props.setIsLoading}/>
+                                     handleClose={handleClose}/>
                     </Offcanvas.Body>
                 </div>
             </Offcanvas>

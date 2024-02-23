@@ -8,7 +8,6 @@ interface FormProps {
     setCoordinates: React.Dispatch<React.SetStateAction<Coordinates[]>>;
     setReleaseDate: React.Dispatch<React.SetStateAction<Date>>;
     handleClose: () => void; // Add handleClose prop type
-    setIsLoading: (value: boolean) => void;
 }
 
 const FormControl = (props: FormProps) => {
@@ -59,7 +58,6 @@ const FormControl = (props: FormProps) => {
 
 
     const handleSubmit = (e: any) => {
-        props.setIsLoading(true);
         props.handleClose();
         e.preventDefault();
         updateCoordinates();
