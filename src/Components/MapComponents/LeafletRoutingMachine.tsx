@@ -19,7 +19,7 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
     useEffect(() => {
         const control = L.Routing.control({
             waypoints: coordinates.map((coordinate) => L.latLng(parseFloat(coordinate.lat), parseFloat(coordinate.lng))),
-            routeWhileDragging: false,
+            routeWhileDragging: true,
             addWaypoints: true,
             fitSelectedRoutes: true,
             showAlternatives: true,
@@ -35,11 +35,11 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
 
         control.on('routesfound', async function (e) {
             // Clear previous route overlays
-            map.eachLayer(function (layer) {
-                if (!(layer instanceof L.TileLayer)) {
-                    map.removeLayer(layer);
-                }
-            });
+            // map.eachLayer(function (layer) {
+            //     if (!(layer instanceof L.TileLayer)) {
+            //         map.removeLayer(layer);
+            //     }
+            // });
 
             const routes = e.routes;
             const routeCoordinates: RoutePoint[] = []
