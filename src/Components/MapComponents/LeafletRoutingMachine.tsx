@@ -48,33 +48,38 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
                 const polyline = route.coordinates;
                 let totalDistanceCovered = 0; // Track the total distance covered by instructions
                 let totalTime = 0;
+                let distanceFromLast = 0;
                 instructions.forEach((instruction: any) => {
                     const distance = instruction.distance;
+                    distanceFromLast += distance
+                    if (distanceFromLast >= 5000) {
+                        // console.log(distanceFromLast)
+                        distanceFromLast = 0;
+                        let distanceCovered = 0;
+                        let coordinates;
+                        for (let i = 0; i < polyline.length; i++) {
+                            if (i === polyline.length - 1) {
+                                coordinates = polyline[i];
+                                break;
+                            }
+                            distanceCovered += L.latLng(polyline[i]).distanceTo(L.latLng(polyline[i + 1]));
+                            if (distanceCovered >= totalDistanceCovered) {
+                                coordinates = polyline[i];
+                                break;
+                            }
+                        }
 
-                    let distanceCovered = 0;
-                    let coordinates;
-                    for (let i = 0; i < polyline.length; i++) {
-                        if (i === polyline.length - 1) {
-                            coordinates = polyline[i];
-                            break;
-                        }
-                        distanceCovered += L.latLng(polyline[i]).distanceTo(L.latLng(polyline[i + 1]));
-                        if (distanceCovered >= totalDistanceCovered) {
-                            coordinates = polyline[i];
-                            break;
-                        }
+                        totalTime += instruction.time;
+                        totalDistanceCovered += distance;
+
+                        routeCoordinates.push({
+                            duration: totalTime,
+                            coordinate: {
+                                lat: coordinates.lat,
+                                lng: coordinates.lng
+                            }
+                        })
                     }
-
-                    totalTime += instruction.time;
-                    totalDistanceCovered += distance;
-
-                    routeCoordinates.push({
-                        duration: totalTime,
-                        coordinate: {
-                            lat: coordinates.lat,
-                            lng: coordinates.lng
-                        }
-                    })
                 });
             });
 
