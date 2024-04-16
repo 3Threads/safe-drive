@@ -34,13 +34,16 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
         }
 
         control.on('routesfound', async function (e) {
-            // Clear previous route overlays
-            // map.eachLayer(function (layer) {
-            //     if (!(layer instanceof L.TileLayer)) {
-            //         map.removeLayer(layer);
-            //     }
-            // });
-
+            // Remove old routes and tooltips before adding new ones
+            map.eachLayer((layer) => {
+                if (
+                    layer instanceof L.Marker ||
+                    layer instanceof L.Routing.Line ||
+                    (layer instanceof L.Polyline && layer.options.className === "leaflet-routing-line") // Check for direction line class
+                ) {
+                    map.removeLayer(layer);
+                }
+            });
             const routes = e.routes;
             const routeCoordinates: RoutePoint[] = []
             routes.forEach((route: any) => {
@@ -104,7 +107,7 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
                         marker.bindTooltip(popupContent, {permanent: true, direction: 'top'}).openTooltip();
                     });
 
-                    console.log(weatherInfo)
+                    // console.log(weatherInfo)
                 })
         });
     }, [coordinates, releaseDate]);
