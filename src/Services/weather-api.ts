@@ -26,7 +26,7 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
             };
 
             if (response.data.forecast.forecastday.length === 0) {
-                console.log(response.data.forecast.forecastday)
+                // console.log(response.data.forecast.forecastday)
                 weather.time = "No data";
                 weather.precipitation = 0;
                 weather.temperature = 0;
