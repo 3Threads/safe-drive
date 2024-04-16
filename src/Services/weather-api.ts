@@ -24,8 +24,24 @@ export function getWeatherByCoordinates(coordinate: Coordinates, date: string, t
                 condition: "",
                 condition_img: "",
             };
-            // console.log(response.data.forecast.forecastday)
 
+            if (response.data.forecast.forecastday.length === 0) {
+                console.log(response.data.forecast.forecastday)
+                weather.time = "No data";
+                weather.precipitation = 0;
+                weather.temperature = 0;
+                weather.visibility = "No data";
+                weather.condition = "No data";
+                weather.condition_img = "No data";
+                const city: string = response.data.location.name + " (" + response.data.location.country + ")"
+                const point: PointDescription = {
+                    coordinate: coordinate,
+                    weather: weather,
+                    city: city,
+                    date: date + ' (' + time + ')'
+                };
+                return point
+            }
             weather.time = response.data.forecast.forecastday[0].hour[0].time;
             weather.precipitation = response.data.forecast.forecastday[0].hour[0].precip_mm;
             weather.temperature = response.data.forecast.forecastday[0].hour[0].feelslike_c

@@ -86,9 +86,24 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
             getWeatherInfo(routeCoordinates, releaseDate)
                 .then((weatherInfo: PointDescription[]) => {
                     weatherInfo.map((point: PointDescription) => {
-                        return L.marker([parseFloat(point.coordinate.lat), parseFloat(point.coordinate.lng)]).addTo(map)
-                            .bindPopup(`<div class="row"><div class="col-4"><img alt=${point.weather.condition_img} src=${point.weather.condition_img} /></div><div class="col-8"><div class="row">${point.weather.temperature}°C</div><div class="row">${point.weather.visibility}km</div></div></div><div class="row">${point.date}</div>`);
+                        const popupContent
+                            = `<div class="row" style="width: 200px">
+                                <div class="col-4" style="padding: 0">
+                                    <img alt=${point.weather.condition_img} src=${point.weather.condition_img} />
+                                </div>
+                                <div class="col">
+                                    <div class="row">temperature: ${point.weather.temperature}°C</div>
+                                    <div class="row">visibility: ${point.weather.visibility}km</div>
+                                    <div class="row">${point.date}</div>
+                                </div>
+                               </div>
+                           `;
+
+                        const marker = L.marker([parseFloat(point.coordinate.lat), parseFloat(point.coordinate.lng)]).addTo(map);
+
+                        marker.bindTooltip(popupContent, {permanent: true, direction: 'top'}).openTooltip();
                     });
+
                     console.log(weatherInfo)
                 })
         });
