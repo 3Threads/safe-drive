@@ -19,9 +19,9 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
     useEffect(() => {
         const control = L.Routing.control({
             waypoints: coordinates.map((coordinate) => L.latLng(parseFloat(coordinate.lat), parseFloat(coordinate.lng))),
-            routeWhileDragging: true,
+            routeWhileDragging: false,
             addWaypoints: true,
-            fitSelectedRoutes: true,
+            fitSelectedRoutes: false,
             showAlternatives: true,
             show: false,
         }).addTo(map);
