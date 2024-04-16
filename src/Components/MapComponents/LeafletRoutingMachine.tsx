@@ -89,6 +89,9 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
             getWeatherInfo(routeCoordinates, releaseDate)
                 .then((weatherInfo: PointDescription[]) => {
                     weatherInfo.map((point: PointDescription) => {
+                        if (point.weather.condition_img === "No data") {
+                            return;
+                        }
                         const popupContent
                             = `<div class="row" style="width: 200px">
                                 <div class="col-4" style="padding: 0">
