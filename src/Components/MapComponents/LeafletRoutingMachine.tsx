@@ -106,7 +106,7 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
 
                         marker.bindTooltip(popupContent, {permanent: true, direction: 'top'}).openTooltip();
                     });
-
+                    map.setView([parseFloat(weatherInfo[0].coordinate.lat), parseFloat(weatherInfo[0].coordinate.lng)], 11);
                     // console.log(weatherInfo)
                 })
         });
