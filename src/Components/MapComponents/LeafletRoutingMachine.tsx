@@ -17,6 +17,24 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
     const map = useMap();
 
     useEffect(() => {
+
+        function getWeatherInfo(routeCoordinates: RoutePoint[], date: Date) {
+            let promises: Promise<PointDescription>[] = [];
+
+            for (let i = 0; i < routeCoordinates.length; i++) {
+                const currDate = roundToHour(new Date(date.getTime() + routeCoordinates[i].duration * 1000 + 4 * 60 * 60 * 1000));
+                let dateArr: string[] = currDate.toISOString().split("T");
+                promises.push(getWeatherByCoordinates(routeCoordinates[i].coordinate, dateArr[0], dateArr[1].substring(0, 5)));
+            }
+
+            return Promise.all(promises);
+        }
+
+        function roundToHour(date: Date): Date {
+            let p: number = 60 * 60 * 1000; // milliseconds in an hour
+            return new Date(Math.round(date.getTime() / p) * p);
+        }
+
         const control = L.Routing.control({
             waypoints: coordinates.map((coordinate) => L.latLng(parseFloat(coordinate.lat), parseFloat(coordinate.lng))),
             routeWhileDragging: false,
@@ -88,7 +106,7 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
 
             getWeatherInfo(routeCoordinates, releaseDate)
                 .then((weatherInfo: PointDescription[]) => {
-                    weatherInfo.map((point: PointDescription) => {
+                    weatherInfo.forEach((point: PointDescription) => {
                         if (point.weather.condition_img === "No data") {
                             return;
                         }
@@ -108,29 +126,13 @@ const LeafletRoutingMachine = ({coordinates, releaseDate}: Props) => {
                         const marker = L.marker([parseFloat(point.coordinate.lat), parseFloat(point.coordinate.lng)]).addTo(map);
 
                         marker.bindTooltip(popupContent, {permanent: true, direction: 'top'}).openTooltip();
+                        return;
                     });
                     map.setView([parseFloat(weatherInfo[0].coordinate.lat), parseFloat(weatherInfo[0].coordinate.lng)], 11);
                     // console.log(weatherInfo)
                 })
         });
-    }, [coordinates, releaseDate]);
-
-    function getWeatherInfo(routeCoordinates: RoutePoint[], date: Date) {
-        let promises: Promise<PointDescription>[] = [];
-
-        for (let i = 0; i < routeCoordinates.length; i++) {
-            const currDate = roundToHour(new Date(date.getTime() + routeCoordinates[i].duration * 1000 + 4 * 60 * 60 * 1000));
-            let dateArr: string[] = currDate.toISOString().split("T");
-            promises.push(getWeatherByCoordinates(routeCoordinates[i].coordinate, dateArr[0], dateArr[1].substring(0, 5)));
-        }
-
-        return Promise.all(promises);
-    }
-
-    function roundToHour(date: Date): Date {
-        let p: number = 60 * 60 * 1000; // milliseconds in an hour
-        return new Date(Math.round(date.getTime() / p) * p);
-    }
+    }, [coordinates, releaseDate, map]);
 
     return null;
 }
