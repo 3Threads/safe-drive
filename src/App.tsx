@@ -1,28 +1,36 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {PointDescription} from './Interfaces/point-description';
-import Table from './Components/Table';
-import OffCanvas from './Components/OffCanvas';
+import OffCanvas from './Components/SearchComponents/OffCanvas';
 import logo from './Images/logo.png';
-import {CircularProgress} from "@mui/material";
+import MapTile from "./Components/MapComponents/MapTile";
+import {Coordinates} from "./Interfaces/coordinates";
 
 const App: React.FC = () => {
-    const [data, setData] = useState<PointDescription[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [coordinates, setCoordinates] = useState<Coordinates[]>([]);
+    const [releaseDate, setReleaseDate] = useState<Date>(new Date());
 
     return (
 
         <div className="bg-dark text-center"> {/* Centering the logo */}
-            <div className="container">
-                <img src={logo} alt="Logo" style={{paddingTop: '20px', width: '300px'}}/> {/* Adjusting the width */}
-                <div className="row pt-4"> {/* Added pt-4 for padding top */}
-                    <div className="col-6">
-                        <OffCanvas setData={setData} setIsLoading={setIsLoading}/>
-                    </div>
-                    {!isLoading ? <Table cityData={data}/> :
-                        <CircularProgress/>
-                    }
+            <div style={{position: "relative", zIndex: "1000"}}>
+                <img src={logo} alt="Logo"
+                     style={{paddingTop: '20px', width: '300px', position: "absolute", right: "0"}}/>
+                <div style={{
+                    position: "absolute",
+                    right: "0",
+                    backgroundColor: "black",
+                    opacity: "0.5",
+                    width: "300px",
+                    height: "100%",
+                    top: 0,
+                    zIndex: "-1"
+                }}></div>
+            </div>
+            <div> {/* Added pt-4 for padding top */}
+                <div>
+                    <OffCanvas setReleaseDate={setReleaseDate} setCoordinates={setCoordinates}/>
                 </div>
+                <MapTile coordinates={coordinates} releaseDate={releaseDate}/>
             </div>
         </div>
     );
